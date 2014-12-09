@@ -1,0 +1,24 @@
+---
+layout: post
+title: "Insert, remove, contains and random in O(1)"
+date: 2014-11-29 22:59:13 +0200
+comments: true
+categories: [Data structures]
+---
+
+**Question**: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in $$O(1)$$ (amortized) time complexity.
+
+---
+
+**Solution**: Our data structure will be made of two data structures: an array $$A$$ to holds the items, and a hashtable $$H$$ that map each item to its position in the array.
+For example, after inserting items 'b', 'a', 'z', the data structures content will be as follows:
+
+    A = ['b', 'a', 'z']
+    B = {'a' : 1, 'b' : 0, 'z' : 2}
+
+
+  * insert(v): append $$v$$ to $$A$$ (let $$i$$ be it's index). Set $$H[v] = i$$.
+  * remove(v): let $$m$$ be the last index in $$A$$ and let $$d=A[m]$$. let $$i= H[v]$$ (that is, the index in $$A$$ of the value to be removed). Set $$A[i]=d$$, $$H[d]=i$$, decrease the size of the array by one and remove $$H[v]$$.
+  * contains(v): return $$H.contains(value)$$
+  * getRandomElement(): let $$r$$=random(current size of A). return $$A[r]$$.
+

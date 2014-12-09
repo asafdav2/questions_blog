@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Power Set"
+date: 2014-12-03 19:32:20 +0200
+comments: true
+categories: [Recursion, Scala]
+---
+
+**Question**: Given an integer $$n$$, implement a function to compute $$ \mathcal P \left({n}\right)$$, the [power set](http://en.wikipedia.org/wiki/Power_set) of the set $$\{1, \ldots, n\}$$.
+
+---
+
+**Solution**: We are required to construct a set containing all subsets of $$\{1, \ldots, n\}$$. This can easily be computed recursively; $$ \mathcal P \left({n}\right)$$ equals the concatanation of $$ \mathcal P \left({n-1}\right)$$ with 
+the set of sets resulted by appending $n$ to every set in $$ \mathcal P \left({n-1}\right)$$. The termination is $$\mathcal P \left({0}\right)$$, which is simply the empty set.
+
+The following is a Scala implementation:
+
+``` Scala
+    def powerSet(n: Int): List[Set[Int]] = if (n == 0) List(Set[Int]()) else {
+      val rec = powerSet(n - 1)
+      rec ::: rec.map(s => s + n)
+    }
+```

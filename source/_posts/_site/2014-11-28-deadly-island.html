@@ -1,0 +1,52 @@
+<p><strong>Question</strong>: Imagine an island made of <script type="math/tex">N \times M</script> tiled board, with a man standing in some initial position <script type="math/tex">(x,y)</script>. In each turn, the man steps either up, down, left or right (each
+with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.</p>
+
+<hr />
+
+<p><strong>Solution</strong>: We’ll mark the probabily that the man, located at <script type="math/tex">(x,y)</script> will live for <script type="math/tex">n</script> steps with <script type="math/tex">p(x,y,n)</script>. Using the <a href="http://en.wikipedia.org/wiki/Law_of_total_probability">Law of total probability</a>,
+we can derive the following equation: </p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+\begin{split}
+&p(x,y,n) = \\ &\frac{p(x-1,y,n-1) + p(x+1,y,n-1) + p(x,y-1,n-1) + p(x,y+1,n-1)}{4}
+\end{split}
+ %]]></script>
+
+<p>Of course, if the man steps outside of the island boundaries, the probability is 0.</p>
+
+<p>This is easy enough to program, but to make it run at reasonable speed, we’ll memoize the probabilities calculated before for certain values of <script type="math/tex">x,y</script> and <script type="math/tex">n</script> (a common idiom 
+in <a href="http://en.wikipedia.org/wiki/Dynamic_programming">Dynamic Programming</a>.
+The following is a Scala implementation:</p>
+
+<p>``` Scala
+class DeadlyIsland(n: Int, m: Int) {</p>
+
+<p>val MaxSteps = 100 </p>
+
+<p>val memoization = Array.ofDim<a href="n, m, MaxSteps">Double</a></p>
+
+<p>def calculate(x: Int, y: Int, steps: Int): Double = {
+    if (x &lt; 0 || x &gt;= n || y &lt; 0 || y &gt;= m)
+      0.0
+    else 
+      if (steps == 0)
+        1
+      else 
+        if (memoization(x)(y)(steps) &gt; 0.0)
+            memoization(x)(y)(steps)
+        else {
+            val prob = 0.25 * (
+                calculate(x - 1, y, steps - 1) +
+                calculate(x + 1, y, steps - 1) +
+                calculate(x, y - 1, steps - 1) +
+                calculate(x, y + 1, steps - 1)
+            )
+            memoization(x)(y)(steps) = prob
+            prob
+        }
+  }
+}
+```
+Have any questions / remarks? leave them at the commonts below!</p>
+

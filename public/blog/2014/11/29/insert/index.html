@@ -20,14 +20,11 @@ MathJax.Hub.Config({
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - My Octopress Blog</title>
+  <title>Insert, Remove, Contains and Random in O(1) - My Octopress Blog</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="Blog Archive 2014 Horse Race
-Dec 03 2014 posted in javascript Sort by Length Then Frequency
-Dec 03 2014 posted in scala Power Set
-Dec 03 2014 posted &hellip;">
+  <meta name="description" content="Question: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in (amortized) time &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -36,7 +33,7 @@ Dec 03 2014 posted &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yoursite.com/blog/archives">
+  <link rel="canonical" href="http://yoursite.com/blog/2014/11/29/insert">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
@@ -76,147 +73,103 @@ Dec 03 2014 posted &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Insert, Remove, Contains and Random in O(1)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-29T22:59:13+02:00" pubdate data-updated="true"></time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p><strong>Question</strong>: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in <script type="math/tex">O(1)</script> (amortized) time complexity.</p>
 
-  
-  <h2>2014</h2>
+<hr />
 
-<article>
-  
-<h1><a href="/blog/2014/12/03/horse_roce/">Horse Race</a></h1>
-<time datetime="2014-12-03T21:55:07+02:00" pubdate><span class='month'>Dec</span> <span class='day'>03</span> <span class='year'>2014</span></time>
+<p><strong>Solution</strong>: Our data structure will be made of two data structures: an array <script type="math/tex">A</script> to holds the items, and a hashtable <script type="math/tex">H</script> that map each item to its position in the array.
+For example, after inserting items ‘b’, ‘a’, ‘z’, the data structures content will be as follows:</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/javascript/'>javascript</a></span>
-</footer>
+<pre><code>A = ['b', 'a', 'z']
+B = {'a' : 1, 'b' : 0, 'z' : 2}
+</code></pre>
 
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort by Length Then Frequency</a></h1>
-<time datetime="2014-12-03T19:32:20+02:00" pubdate><span class='month'>Dec</span> <span class='day'>03</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/scala/'>scala</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/12/03/power-set/">Power Set</a></h1>
-<time datetime="2014-12-03T19:32:20+02:00" pubdate><span class='month'>Dec</span> <span class='day'>03</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/recursion/'>recursion</a>, <a class='category' href='/blog/categories/scala/'>scala</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/12/02/log-every-second/">Log Every Second</a></h1>
-<time datetime="2014-12-02T21:54:15+02:00" pubdate><span class='month'>Dec</span> <span class='day'>02</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/javascript/'>javascript</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/12/01/plus-minus-array/">Plus Minus Array</a></h1>
-<time datetime="2014-12-01T23:17:39+02:00" pubdate><span class='month'>Dec</span> <span class='day'>01</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/binary-search/'>binary search</a>, <a class='category' href='/blog/categories/scala/'>scala</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/11/29/insert/">Insert, Remove, Contains and Random in O(1)</a></h1>
-<time datetime="2014-11-29T22:59:13+02:00" pubdate><span class='month'>Nov</span> <span class='day'>29</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/data-structures/'>data structures</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/11/29/square-root/">Square Root</a></h1>
-<time datetime="2014-11-29T18:20:21+02:00" pubdate><span class='month'>Nov</span> <span class='day'>29</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/binary-search/'>binary search</a>, <a class='category' href='/blog/categories/scala/'>scala</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/11/28/keypad/">Keypad</a></h1>
-<time datetime="2014-11-28T12:43:56+02:00" pubdate><span class='month'>Nov</span> <span class='day'>28</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/recursion/'>recursion</a>, <a class='category' href='/blog/categories/scala/'>scala</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/11/28/deadly-island/">Deadly Island</a></h1>
-<time datetime="2014-11-28T06:57:33+02:00" pubdate><span class='month'>Nov</span> <span class='day'>28</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dynamic-programming/'>dynamic programming</a>, <a class='category' href='/blog/categories/scala/'>scala</a></span>
-</footer>
-
-
-</article>
+<ul>
+  <li>insert(v): append <script type="math/tex">v</script> to <script type="math/tex">A</script> (let <script type="math/tex">i</script> be it’s index). Set <script type="math/tex">H[v] = i</script>.</li>
+  <li>remove(v): let <script type="math/tex">m</script> be the last index in <script type="math/tex">A</script> and let <script type="math/tex">d=A[m]</script>. let <script type="math/tex">i= H[v]</script> (that is, the index in <script type="math/tex">A</script> of the value to be removed). Set <script type="math/tex">A[i]=d</script>, <script type="math/tex">H[d]=i</script>, decrease the size of the array by one and remove <script type="math/tex">H[v]</script>.</li>
+  <li>contains(v): return <script type="math/tex">H.contains(value)</script></li>
+  <li>getRandomElement(): let <script type="math/tex">r</script>=random(current size of A). return <script type="math/tex">A[r]</script>.</li>
+</ul>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-29T22:59:13+02:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data-structures/'>data structures</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://yoursite.com/blog/2014/11/29/insert/" data-via="" data-counturl="http://yoursite.com/blog/2014/11/29/insert/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/11/29/square-root/" title="Previous Post: Square Root">&laquo; Square Root</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/12/01/plus-minus-array/" title="Next Post: plus minus array">plus minus array &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

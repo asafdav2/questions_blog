@@ -1,0 +1,69 @@
+---
+layout: post
+title: "Keypad"
+date: 2014-11-28 12:43:56 +0200
+comments: true
+categories: [Recursion, Scala] 
+---
+
+**Question**: Given the English alphabet, 'a' through 'z' (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 columns:
+
+    a b c d e
+    f g h i j
+    k l m n o
+    p q r s t
+    u v w x y
+    z
+
+write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - 'u', down - 'd', left - 'l', right - 'r' and enter - '!').
+
+---
+
+**Solution**: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
+and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert "hello" to [('h', 'e'), ('e', 'l'), ('l', 'l'), ('l', 'o')]). 
+Two more required changes are to prepend 'a' to the word (to start movemonts from the top left corner of the keypad) and insert '!' whenever we reached a character of the word.
+
+The following is a Scala solution:
+
+``` Scala
+    class Keypad {
+    
+      val rowLength = 5
+    
+      def movements(from: (Int, Int), to: (Int, Int)): List[String] = if (from == to) Nil else {
+        val xDiff = to._1 - from._1
+        val yDiff = to._2 - from._2
+        if (xDiff < 0) 
+          "l" :: movements(left(from), to)
+        else if (yDiff > 0)
+          "d" :: movements(down(from), to)
+        else if (yDiff < 0)
+          "u" :: movements(up(from), to)
+        else 
+          "r" :: movements(right(from), to)
+      }
+    
+      def movements(from: Char, to: Char): List[String] = movements(coords(from), coords(to))
+    
+      def movements(pairs: List[(Char, Char)]): List[String] = if (pairs.isEmpty) Nil else 
+        movements(pairs.head._1, pairs.head._2) ::: List("!") ::: movements(pairs.tail)
+    
+      def movements(word: String): List[String] = { 
+        val chars = 'a' :: word.toList
+        val pairs = chars zip chars.tail
+        movements(pairs)
+      }
+    
+      def coords(c: Char): (Int, Int) = {
+        val i = c - 'a'
+        (i % rowLength, i / rowLength)
+      }
+      
+      def down(p: (Int, Int)): (Int, Int) = (p._1, p._2 + 1)
+      def up(p: (Int, Int)): (Int, Int) = (p._1, p._2 - 1)
+      def right(p: (Int, Int)): (Int, Int) = (p._1 + 1, p._2)
+      def left(p: (Int, Int)): (Int, Int) = (p._1 - 1, p._2)
+    }
+```
+
+Have any questions / remarks? leave them at the commonts below!

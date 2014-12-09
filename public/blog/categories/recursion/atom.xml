@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Recursion | My Octopress Blog]]></title>
+  <link href="http://yoursite.com/blog/categories/recursion/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2014-12-07T07:37:11+02:00</updated>
+  <id>http://yoursite.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Power Set]]></title>
+    <link href="http://yoursite.com/blog/2014/12/03/power-set/"/>
+    <updated>2014-12-03T19:32:20+02:00</updated>
+    <id>http://yoursite.com/blog/2014/12/03/power-set</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.</p>
+
+<hr />
+
+<p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
+the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
+
+<p>The following is a Scala implementation:</p>
+
+<p><code>Scala
+    def powerSet(n: Int): List[Set[Int]] = if (n == 0) List(Set[Int]()) else {
+      val rec = powerSet(n - 1)
+      rec ::: rec.map(s =&gt; s + n)
+    }
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Keypad]]></title>
+    <link href="http://yoursite.com/blog/2014/11/28/keypad/"/>
+    <updated>2014-11-28T12:43:56+02:00</updated>
+    <id>http://yoursite.com/blog/2014/11/28/keypad</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Given the English alphabet, ‘a’ through ‘z’ (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 columns:</p>
+
+<pre><code>a b c d e
+f g h i j
+k l m n o
+p q r s t
+u v w x y
+z
+</code></pre>
+
+<p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).</p>
+
+<hr />
+
+<p><strong>Solution</strong>: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
+and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert “hello” to [(‘h’, ‘e’), (‘e’, ‘l’), (‘l’, ‘l’), (‘l’, ‘o’)]). 
+Two more required changes are to prepend ‘a’ to the word (to start movemonts from the top left corner of the keypad) and insert ‘!’ whenever we reached a character of the word.</p>
+
+<p>The following is a Scala solution:</p>
+
+<p>&#8220;` Scala
+    class Keypad {</p>
+
+<pre><code>  val rowLength = 5
+
+  def movements(from: (Int, Int), to: (Int, Int)): List[String] = if (from == to) Nil else {
+    val xDiff = to._1 - from._1
+    val yDiff = to._2 - from._2
+    if (xDiff &lt; 0) 
+      "l" :: movements(left(from), to)
+    else if (yDiff &gt; 0)
+      "d" :: movements(down(from), to)
+    else if (yDiff &lt; 0)
+      "u" :: movements(up(from), to)
+    else 
+      "r" :: movements(right(from), to)
+  }
+
+  def movements(from: Char, to: Char): List[String] = movements(coords(from), coords(to))
+
+  def movements(pairs: List[(Char, Char)]): List[String] = if (pairs.isEmpty) Nil else 
+    movements(pairs.head._1, pairs.head._2) ::: List("!") ::: movements(pairs.tail)
+
+  def movements(word: String): List[String] = { 
+    val chars = 'a' :: word.toList
+    val pairs = chars zip chars.tail
+    movements(pairs)
+  }
+
+  def coords(c: Char): (Int, Int) = {
+    val i = c - 'a'
+    (i % rowLength, i / rowLength)
+  }
+  
+  def down(p: (Int, Int)): (Int, Int) = (p._1, p._2 + 1)
+  def up(p: (Int, Int)): (Int, Int) = (p._1, p._2 - 1)
+  def right(p: (Int, Int)): (Int, Int) = (p._1 + 1, p._2)
+  def left(p: (Int, Int)): (Int, Int) = (p._1 - 1, p._2)
+} ```
+</code></pre>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
+]]></content>
+  </entry>
+  
+</feed>
