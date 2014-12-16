@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Dynamic Programming | My Octopress Blog]]></title>
-  <link href="http://yoursite.com/blog/categories/dynamic-programming/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2014-12-07T07:37:11+02:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[Category: Dynamic Programming | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/dynamic-programming/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2014-12-16T22:20:34+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Asaf David]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Deadly Island]]></title>
-    <link href="http://yoursite.com/blog/2014/11/28/deadly-island/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/28/deadly-island/"/>
     <updated>2014-11-28T06:57:33+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/28/deadly-island</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/28/deadly-island</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Imagine an island made of <script type="math/tex">N \times M</script> tiled board, with a man standing in some initial position <script type="math/tex">(x,y)</script>. In each turn, the man steps either up, down, left or right (each
 with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.</p>
 

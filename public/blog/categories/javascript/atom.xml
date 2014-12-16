@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Javascript | My Octopress Blog]]></title>
-  <link href="http://yoursite.com/blog/categories/javascript/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2014-12-07T07:37:11+02:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[Category: Javascript | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2014-12-16T22:20:34+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Asaf David]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Horse Race]]></title>
-    <link href="http://yoursite.com/blog/2014/12/03/horse_roce/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/"/>
     <updated>2014-12-03T21:55:07+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/03/horse_roce</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a horse race. The race is initialized with a length and an array of speeds for each horse. When a horse wins, you should
 print an appropriate message to the console. During the race, the client can call update(horse_id, speed).</p>
 
@@ -71,9 +71,9 @@ var getMillis = function() {
   
   <entry>
     <title type="html"><![CDATA[Log Every Second]]></title>
-    <link href="http://yoursite.com/blog/2014/12/02/log-every-second/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second/"/>
     <updated>2014-12-02T21:54:15+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/02/log-every-second</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Please write a program which will log an increasing integer, once every second.</p>
 
 <hr />

@@ -1,59 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://yoursite.com/blog/2014/12/03/horse_roce/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/</loc>
+    <lastmod>2014-12-15T19:32:20+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/</loc>
     <lastmod>2014-12-03T21:55:07+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/12/03/sort-by-length-then-frequency/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/03/sort-by-length-then-frequency/</loc>
     <lastmod>2014-12-03T19:32:20+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/12/03/power-set/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set/</loc>
     <lastmod>2014-12-03T19:32:20+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/12/02/log-every-second/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second/</loc>
     <lastmod>2014-12-02T21:54:15+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/12/01/plus-minus-array/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/</loc>
     <lastmod>2014-12-01T23:17:39+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/11/29/insert/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/11/29/insert/</loc>
     <lastmod>2014-11-29T22:59:13+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/11/29/square-root/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/11/29/square-root/</loc>
     <lastmod>2014-11-29T18:20:21+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/11/28/keypad/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/11/28/keypad/</loc>
     <lastmod>2014-11-28T12:43:56+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/2014/11/28/deadly-island/</loc>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/11/28/deadly-island/</loc>
     <lastmod>2014-11-28T06:57:33+02:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/blog/archives/</loc>
-    <lastmod>2014-12-07T07:37:11+02:00</lastmod>
+    <loc>http://interviewbits.herokuapp.com/blog/archives/</loc>
+    <lastmod>2014-12-16T22:20:34+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://yoursite.com/</loc>
-    <lastmod>2014-12-07T07:37:11+02:00</lastmod>
+    <loc>http://interviewbits.herokuapp.com/</loc>
+    <lastmod>2014-12-16T22:20:34+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

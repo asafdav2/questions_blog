@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Binary Search | My Octopress Blog]]></title>
-  <link href="http://yoursite.com/blog/categories/binary-search/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2014-12-07T07:37:11+02:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[Category: Binary Search | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/binary-search/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2014-12-16T22:20:34+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Asaf David]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Plus Minus Array]]></title>
-    <link href="http://yoursite.com/blog/2014/12/01/plus-minus-array/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/"/>
     <updated>2014-12-01T23:17:39+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/01/plus-minus-array</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: We are givan an array <script type="math/tex">A</script> (with size <script type="math/tex">n</script>) where every cell holds either ‘+’ or ‘-‘.
 We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
 and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
@@ -88,9 +88,9 @@ will eventually terminate.</p>
   
   <entry>
     <title type="html"><![CDATA[Square Root]]></title>
-    <link href="http://yoursite.com/blog/2014/11/29/square-root/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/29/square-root/"/>
     <updated>2014-11-29T18:20:21+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/29/square-root</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/29/square-root</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> (that is, find <script type="math/tex">y</script> such that <script type="math/tex">% &lt;![CDATA[
  \lvert \sqrt{x} - y \rvert < \epsilon %]]&gt;</script>). Obviously, you’re not allowed to use the startand <code>sqrt</code> function. </p>
 

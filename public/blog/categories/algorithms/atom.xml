@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Algorithms | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/algorithms/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2014-12-16T22:20:34+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Asaf David]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Celebrities]]></title>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/"/>
+    <updated>2014-12-15T19:32:20+02:00</updated>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
+Assume you have a function <script type="math/tex">knowns(A,B)</script> which runs in constant time and returns true if <script type="math/tex">A</script> knows <script type="math/tex">B</script>.
+Implement a function which takes a list of people and find the celebrities. The function should run in linear time complexity.</p>
+
+<p><strong>Example</strong>: If the people list is <script type="math/tex">[A, B, C, D]</script> and the following relations apply:</p>
+
+<pre><code>A knows B
+A knows D
+C knows B
+C knows A
+D knows B
+</code></pre>
+
+<p>Then the function should return $$B$.</p>
+
+<hr />
+
+<p><strong>Solution</strong>: First, we can easily deduce that according to the definition there can only be one celebrity
+in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">b</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).
+The main idea is that given 2 potential celebrities,, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <code>knows(A,B) = true</code> then we can eliminate <script type="math/tex">A</script>, else we can eliminate $$B$). 
+The actual algorithm is as follows: build a linked list containing all people. This is the potential celebrities pool. Iterate over the list in pairs, and for each pair eliminate one people as described above.
+When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
+
+<p>Each iteration takes time linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots = O(n)</script>).</p>
+
+<p>The following is a Scala implementation:</p>
+
+<p>&#8220;` Scala
+    val people = List(1, 2, 3, 4)
+    val connections = Map((1, 2) -&gt; true , (3,2) -&gt; true, (4,2) -&gt; true, (1,4) -&gt; true, (4,3) -&gt; true)</p>
+
+<pre><code>def knows(a: Int, b: Int) = connections contains (a,b)
+
+def diminish(people: List[Int]): List[Int] = people match {
+  case Nil =&gt; Nil
+  case a :: b :: rest =&gt; (if (knows(a,b)) b else a) :: diminish(rest)
+}
+
+def celebrity(people: List[Int]): Int = 
+  if (people.length == 1) people.head 
+  else celebrity(diminish(people)) ```
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

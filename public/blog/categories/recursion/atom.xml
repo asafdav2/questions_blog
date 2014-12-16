@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Recursion | My Octopress Blog]]></title>
-  <link href="http://yoursite.com/blog/categories/recursion/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2014-12-07T07:37:11+02:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[Category: Recursion | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/recursion/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2014-12-16T22:20:34+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Asaf David]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Power Set]]></title>
-    <link href="http://yoursite.com/blog/2014/12/03/power-set/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/power-set/"/>
     <updated>2014-12-03T19:32:20+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/03/power-set</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.</p>
 
 <hr />
@@ -38,9 +38,9 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
   
   <entry>
     <title type="html"><![CDATA[Keypad]]></title>
-    <link href="http://yoursite.com/blog/2014/11/28/keypad/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/28/keypad/"/>
     <updated>2014-11-28T12:43:56+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/28/keypad</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/28/keypad</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given the English alphabet, ‘a’ through ‘z’ (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 columns:</p>
 
 <pre><code>a b c d e

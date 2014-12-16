@@ -1,23 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://yoursite.com/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2014-12-07T07:37:11+02:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2014-12-16T22:20:34+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Asaf David]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
+    <title type="html"><![CDATA[Celebrities]]></title>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/"/>
+    <updated>2014-12-15T19:32:20+02:00</updated>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
+Assume you have a function <script type="math/tex">knowns(A,B)</script> which runs in constant time and returns true if <script type="math/tex">A</script> knows <script type="math/tex">B</script>.
+Implement a function which takes a list of people and find the celebrities. The function should run in linear time complexity.</p>
+
+<p><strong>Example</strong>: If the people list is <script type="math/tex">[A, B, C, D]</script> and the following relations apply:</p>
+
+<pre><code>A knows B
+A knows D
+C knows B
+C knows A
+D knows B
+</code></pre>
+
+<p>Then the function should return $$B$.</p>
+
+<hr />
+
+<p><strong>Solution</strong>: First, we can easily deduce that according to the definition there can only be one celebrity
+in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">b</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).
+The main idea is that given 2 potential celebrities,, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <code>knows(A,B) = true</code> then we can eliminate <script type="math/tex">A</script>, else we can eliminate $$B$). 
+The actual algorithm is as follows: build a linked list containing all people. This is the potential celebrities pool. Iterate over the list in pairs, and for each pair eliminate one people as described above.
+When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
+
+<p>Each iteration takes time linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots = O(n)</script>).</p>
+
+<p>The following is a Scala implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">val</span> <span class="n">people</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+</span><span class="line"><span class="k">val</span> <span class="n">connections</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">((</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span> <span class="o">,</span> <span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">connections</span> <span class="n">contains</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">people</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+</span><span class="line">  <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">b</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">))</span> <span class="n">b</span> <span class="k">else</span> <span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">diminish</span><span class="o">(</span><span class="n">rest</span><span class="o">)</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+</span><span class="line">  <span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">people</span><span class="o">.</span><span class="n">head</span>
+</span><span class="line">  <span class="k">else</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Horse Race]]></title>
-    <link href="http://yoursite.com/blog/2014/12/03/horse_roce/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/"/>
     <updated>2014-12-03T21:55:07+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/03/horse_roce</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a horse race. The race is initialized with a length and an array of speeds for each horse. When a horse wins, you should
 print an appropriate message to the console. During the race, the client can call update(horse_id, speed).</p>
 
@@ -112,9 +174,9 @@ print an appropriate message to the console. During the race, the client can cal
   
   <entry>
     <title type="html"><![CDATA[Sort by Length Then Frequency]]></title>
-    <link href="http://yoursite.com/blog/2014/12/03/sort-by-length-then-frequency/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/sort-by-length-then-frequency/"/>
     <updated>2014-12-03T19:32:20+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/03/sort-by-length-then-frequency</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/sort-by-length-then-frequency</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes a file name of text file that contains words (each in a different line, 
 words may apper more than once), and returns the list of words (without duplications), sorted first by word 
 length (descending) and then by number of occurrences (descending).</p>
@@ -181,9 +243,9 @@ B
   
   <entry>
     <title type="html"><![CDATA[Power Set]]></title>
-    <link href="http://yoursite.com/blog/2014/12/03/power-set/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/power-set/"/>
     <updated>2014-12-03T19:32:20+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/03/power-set</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.</p>
 
 <hr />
@@ -207,9 +269,9 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
   
   <entry>
     <title type="html"><![CDATA[Log Every Second]]></title>
-    <link href="http://yoursite.com/blog/2014/12/02/log-every-second/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second/"/>
     <updated>2014-12-02T21:54:15+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/02/log-every-second</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Please write a program which will log an increasing integer, once every second.</p>
 
 <hr />
@@ -250,9 +312,9 @@ the moment that the browser started to process it.</p>
   
   <entry>
     <title type="html"><![CDATA[Plus Minus Array]]></title>
-    <link href="http://yoursite.com/blog/2014/12/01/plus-minus-array/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/"/>
     <updated>2014-12-01T23:17:39+02:00</updated>
-    <id>http://yoursite.com/blog/2014/12/01/plus-minus-array</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: We are givan an array <script type="math/tex">A</script> (with size <script type="math/tex">n</script>) where every cell holds either ‘+’ or ‘-‘.
 We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
 and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
@@ -339,9 +401,9 @@ will eventually terminate.</p>
   
   <entry>
     <title type="html"><![CDATA[Insert, Remove, Contains and Random in O(1)]]></title>
-    <link href="http://yoursite.com/blog/2014/11/29/insert/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/29/insert/"/>
     <updated>2014-11-29T22:59:13+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/29/insert</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/29/insert</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in <script type="math/tex">O(1)</script> (amortized) time complexity.</p>
 
 <hr />
@@ -365,9 +427,9 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
   
   <entry>
     <title type="html"><![CDATA[Square Root]]></title>
-    <link href="http://yoursite.com/blog/2014/11/29/square-root/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/29/square-root/"/>
     <updated>2014-11-29T18:20:21+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/29/square-root</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/29/square-root</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> (that is, find <script type="math/tex">y</script> such that <script type="math/tex">% &lt;![CDATA[
  \lvert \sqrt{x} - y \rvert < \epsilon %]]&gt;</script>). Obviously, you’re not allowed to use the startand <code>sqrt</code> function. </p>
 
@@ -408,9 +470,9 @@ else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize<
   
   <entry>
     <title type="html"><![CDATA[Keypad]]></title>
-    <link href="http://yoursite.com/blog/2014/11/28/keypad/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/28/keypad/"/>
     <updated>2014-11-28T12:43:56+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/28/keypad</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/28/keypad</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given the English alphabet, ‘a’ through ‘z’ (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 columns:</p>
 
 <pre><code>a b c d e
@@ -515,9 +577,9 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
   
   <entry>
     <title type="html"><![CDATA[Deadly Island]]></title>
-    <link href="http://yoursite.com/blog/2014/11/28/deadly-island/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/11/28/deadly-island/"/>
     <updated>2014-11-28T06:57:33+02:00</updated>
-    <id>http://yoursite.com/blog/2014/11/28/deadly-island</id>
+    <id>http://interviewbits.herokuapp.com/blog/2014/11/28/deadly-island</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Imagine an island made of <script type="math/tex">N \times M</script> tiled board, with a man standing in some initial position <script type="math/tex">(x,y)</script>. In each turn, the man steps either up, down, left or right (each
 with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.</p>
 

@@ -20,11 +20,12 @@ MathJax.Hub.Config({
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Octopress Blog</title>
-  <meta name="author" content="Your Name">
+  <title>Interview Bits</title>
+  <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: In this question we model a horse race. The race is initialized with a length and an array of speeds for each horse. When a horse wins, you &hellip;">
+  <meta name="description" content="Question: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
+Assume you have a function which runs in constant time &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,10 +34,10 @@ MathJax.Hub.Config({
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yoursite.com">
+  <link rel="canonical" href="http://interviewbits.herokuapp.com">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Interview Bits" type="application/atom+xml">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -52,9 +53,9 @@ MathJax.Hub.Config({
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">Interview Bits</a></h1>
   
-    <h2>A blogging framework for hackers.</h2>
+    <h2>Software development interview questions and solutions</h2>
   
 </hgroup>
 
@@ -74,6 +75,95 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/15/celebrities/">Celebrities</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-15T19:32:20+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Question</strong>: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
+Assume you have a function <script type="math/tex">knowns(A,B)</script> which runs in constant time and returns true if <script type="math/tex">A</script> knows <script type="math/tex">B</script>.
+Implement a function which takes a list of people and find the celebrities. The function should run in linear time complexity.</p>
+
+<p><strong>Example</strong>: If the people list is <script type="math/tex">[A, B, C, D]</script> and the following relations apply:</p>
+
+<pre><code>A knows B
+A knows D
+C knows B
+C knows A
+D knows B
+</code></pre>
+
+<p>Then the function should return $$B$.</p>
+
+<hr />
+
+<p><strong>Solution</strong>: First, we can easily deduce that according to the definition there can only be one celebrity
+in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">b</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).
+The main idea is that given 2 potential celebrities,, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <code>knows(A,B) = true</code> then we can eliminate <script type="math/tex">A</script>, else we can eliminate $$B$). 
+The actual algorithm is as follows: build a linked list containing all people. This is the potential celebrities pool. Iterate over the list in pairs, and for each pair eliminate one people as described above.
+When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
+
+<p>Each iteration takes time linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots = O(n)</script>).</p>
+
+<p>The following is a Scala implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">val</span> <span class="n">people</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+</span><span class="line"><span class="k">val</span> <span class="n">connections</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">((</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span> <span class="o">,</span> <span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">connections</span> <span class="n">contains</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">people</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+</span><span class="line">  <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">b</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">))</span> <span class="n">b</span> <span class="k">else</span> <span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">diminish</span><span class="o">(</span><span class="n">rest</span><span class="o">)</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+</span><span class="line">  <span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">people</span><span class="o">.</span><span class="n">head</span>
+</span><span class="line">  <span class="k">else</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -914,7 +1004,7 @@ The following is a Scala implementation:</p>
    
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:yoursite.com" />
+    <input type="hidden" name="q" value="site:interviewbits.herokuapp.com" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -923,6 +1013,10 @@ The following is a Scala implementation:</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/12/15/celebrities/">Celebrities</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/horse_roce/">Horse Race</a>
@@ -940,10 +1034,6 @@ The following is a Scala implementation:</p>
         <a href="/blog/2014/12/02/log-every-second/">Log Every Second</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/12/01/plus-minus-array/">Plus Minus Array</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -958,7 +1048,7 @@ The following is a Scala implementation:</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Your Name -
+  Copyright &copy; 2014 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
