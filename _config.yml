@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://interviewbits.herokuapp.com
+title: Interview Bits
+subtitle: Software development interview questions and solutions
+author: Asaf David
 simple_search: https://www.google.com/search
 description:
 
