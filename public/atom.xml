@@ -4,7 +4,7 @@
   <title><![CDATA[Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-17T08:00:35+02:00</updated>
+  <updated>2014-12-18T12:07:32+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -18,9 +18,9 @@
     <link href="http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/"/>
     <updated>2014-12-15T19:32:20+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
-Assume you have a function <script type="math/tex">knowns(A,B)</script> which runs in constant time and returns true if <script type="math/tex">A</script> knows <script type="math/tex">B</script>.
-Implement a function which takes a list of people and find the celebrities. The function should run in linear time complexity.</p>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Let us define a <em>celebritiy</em> as a person who is known by everyone, yet knows no one.
+Assume you have a function <script type="math/tex">knows(A,B)</script> which returns TRUE if <script type="math/tex">A</script> knows <script type="math/tex">B</script> (and runs in constant time).
+Implement a function that finds the celebrities in a given list of people. This function should run in linear time complexity.</p>
 
 <p><strong>Example</strong>: If the people list is <script type="math/tex">[A, B, C, D]</script> and the following relations apply:</p>
 
@@ -31,17 +31,18 @@ C knows A
 D knows B
 </code></pre>
 
-<p>Then the function should return <script type="math/tex">B</script>.</p>
+<p>Then the result should be <script type="math/tex">B</script>.</p>
 
 <hr />
 
-<p><strong>Solution</strong>: First, we can easily deduce that according to the definition there can only be one celebrity
-in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">b</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).
-The main idea is that given 2 potential celebrities,, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <code>knows(A,B) = true</code> then we can eliminate <script type="math/tex">A</script>, else we can eliminate $$B$). 
-The actual algorithm is as follows: build a linked list containing all people. This is the potential celebrities pool. Iterate over the list in pairs, and for each pair eliminate one people as described above.
+<p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
+in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>
+
+<p>The main idea is that given 2 potential celebrities, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <script type="math/tex">A</script> knows <script type="math/tex">B</script> then we can eliminate <script type="math/tex">A</script>, else we can eliminate <script type="math/tex">B</script>). 
+The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
 When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
 
-<p>Each iteration takes time linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots = O(n)</script>).</p>
+<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \larrow 2n</script>).</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -57,31 +58,29 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
 <span class="line-number">10</span>
 <span class="line-number">11</span>
 <span class="line-number">12</span>
-<span class="line-number">13</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">val</span> <span class="n">people</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
-</span><span class="line"><span class="k">val</span> <span class="n">connections</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">((</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span> <span class="o">,</span> <span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">4</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">)</span>
+</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Celebrities</span> <span class="o">{</span>
 </span><span class="line">
-</span><span class="line"><span class="k">def</span> <span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">connections</span> <span class="n">contains</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">)</span>
+</span><span class="line">    <span class="k">def</span> <span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">people</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+</span><span class="line">        <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">b</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">))</span> <span class="n">b</span> <span class="k">else</span> <span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">diminish</span><span class="o">(</span><span class="n">rest</span><span class="o">)</span>
+</span><span class="line">    <span class="o">}</span>
 </span><span class="line">
-</span><span class="line"><span class="k">def</span> <span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">people</span> <span class="k">match</span> <span class="o">{</span>
-</span><span class="line">  <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
-</span><span class="line">  <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">b</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">))</span> <span class="n">b</span> <span class="k">else</span> <span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">diminish</span><span class="o">(</span><span class="n">rest</span><span class="o">)</span>
+</span><span class="line">    <span class="k">def</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">people</span><span class="o">.</span><span class="n">head</span>
+</span><span class="line">        <span class="k">else</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="o">))</span>
+</span><span class="line">
 </span><span class="line"><span class="o">}</span>
-</span><span class="line">
-</span><span class="line"><span class="k">def</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
-</span><span class="line">  <span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">people</span><span class="o">.</span><span class="n">head</span>
-</span><span class="line">  <span class="k">else</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="o">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Horse Race]]></title>
+    <title type="html"><![CDATA[Car Race]]></title>
     <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/"/>
     <updated>2014-12-03T21:55:07+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a horse race. The race is initialized with a length and an array of speeds for each horse. When a horse wins, you should
-print an appropriate message to the console. During the race, the client can call update(horse_id, speed).</p>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a car race. The race is initialized with a length and an array of speeds for each car. When a car wins, you should
+print an appropriate message to the console. During the race, the client can call update(car_id, speed).</p>
 
 <p><strong>Solution</strong>:</p>
 
@@ -160,7 +159,7 @@ print an appropriate message to the console. During the race, the client can cal
 </span><span class="line"><span class="p">};</span>
 </span><span class="line">
 </span><span class="line"><span class="kd">var</span> <span class="nx">winner</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;has won the race!&#39;</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Car&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;has won the race!&#39;</span><span class="p">);</span>
 </span><span class="line"><span class="p">};</span>
 </span><span class="line">
 </span><span class="line"><span class="kd">var</span> <span class="nx">getMillis</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>

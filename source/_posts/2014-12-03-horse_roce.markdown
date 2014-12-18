@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "Horse Race"
+title: "Car Race"
 date: 2014-12-03 21:55:07 +0200
 comments: true
 categories: [Javascript]
 ---
 
-**Question**: In this question we model a horse race. The race is initialized with a length and an array of speeds for each horse. When a horse wins, you should
-print an appropriate message to the console. During the race, the client can call update(horse_id, speed).
+**Question**: In this question we model a car race. The race is initialized with a length and an array of speeds for each car. When a car wins, you should
+print an appropriate message to the console. During the race, the client can call update(car_id, speed).
 
 **Solution**:
 
@@ -46,7 +46,7 @@ print an appropriate message to the console. During the race, the client can cal
     };
     
     var winner = function(id) {
-        console.log('horse', id, 'has won the race!');
+        console.log('Car', id, 'has won the race!');
     };
     
     var getMillis = function() {

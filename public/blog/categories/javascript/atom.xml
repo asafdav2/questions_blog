@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-17T08:00:35+02:00</updated>
+  <updated>2014-12-18T12:07:32+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -14,12 +14,12 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Horse Race]]></title>
+    <title type="html"><![CDATA[Car Race]]></title>
     <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/"/>
     <updated>2014-12-03T21:55:07+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a horse race. The race is initialized with a length and an array of speeds for each horse. When a horse wins, you should
-print an appropriate message to the console. During the race, the client can call update(horse_id, speed).</p>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a car race. The race is initialized with a length and an array of speeds for each car. When a car wins, you should
+print an appropriate message to the console. During the race, the client can call update(car_id, speed).</p>
 
 <p><strong>Solution</strong>:</p>
 
@@ -58,7 +58,7 @@ Race.prototype.update = function(id, speed) {
 };
 
 var winner = function(id) {
-    console.log('horse', id, 'has won the race!');
+    console.log('Car', id, 'has won the race!');
 };
 
 var getMillis = function() {
