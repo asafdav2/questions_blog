@@ -29,7 +29,7 @@ The main idea is that given 2 potential celebrities, $$A$$ and $$B$$, we can ask
 The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
 When we reach the end of the list, we've eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.
 
-The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well ($$n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \larrow 2n$$).
+The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well ($$n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \rightarrow 2n$$).
 
 The following is a Scala implementation:
 
@@ -47,3 +47,5 @@ The following is a Scala implementation:
     
     }
 ```
+
+Have any questions / remarks? leave them at the commonts below!

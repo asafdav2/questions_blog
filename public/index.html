@@ -24,8 +24,13 @@ MathJax.Hub.Config({
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
-Assume you have a function which returns TRUE if knows ( &hellip;">
+  <meta name="description" content="Question: Your task is to implement a class that stores rectangles. A rectangle is defined by the following interface: 1
+2
+3
+4
+5
+6
+public interface &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +86,244 @@ Assume you have a function which returns TRUE if knows ( &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/12/18/rectangles-store/">Rectangles Store</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-18T14:57:53+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Question</strong>: Your task is to implement a class that stores rectangles. A rectangle is defined by the following interface:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="Java"><span class="line"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Rectangle</span> <span class="o">{</span>
+</span><span class="line">    <span class="kt">int</span> <span class="nf">getLeft</span><span class="o">();</span>
+</span><span class="line">    <span class="kt">int</span> <span class="nf">getTop</span><span class="o">();</span>
+</span><span class="line">    <span class="kt">int</span> <span class="nf">getRight</span><span class="o">();</span>
+</span><span class="line">    <span class="kt">int</span> <span class="nf">getBottom</span><span class="o">();</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You should implement the following interface:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="Java"><span class="line"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">RectanglesStore</span> <span class="o">{</span>
+</span><span class="line">    <span class="kt">void</span> <span class="nf">initialize</span><span class="o">(</span><span class="n">Rectangle</span> <span class="n">bounds</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="n">rectangles</span><span class="o">);</span>
+</span><span class="line">    <span class="n">Rectangle</span> <span class="nf">findRectangleAt</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">);</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The arguments to the <code>initialize</code> method are a rectangle that represents the bounds (e.g. the area in which other rectangles can appear), and a collection of rectangles.
+You are required to store these rectangles in an efficient manner (in terms of memory consumption), and to later return the topmost rectangle per specified <script type="math/tex">x</script>, <script type="math/tex">y</script> location (or null in case no rectangle exists in the specified location) in the most time efficient way.</p>
+
+<p>Note: The solution should support a large number of rectangles, and an extremely large bounding rectangle, so the following solutions are invalid:</p>
+
+<ul>
+  <li>a simple collection of rectangles (isn’t efficient enough performance-wise)</li>
+  <li>a map of each point to its corresponding rectangle (isn’t efficient enough memory-wise)</li>
+</ul>
+
+<p><strong>Solution</strong>:</p>
+
+<p>In addition to the rectangles themselves, our solution will maintain the following 4 sorted sets: </p>
+
+<ul>
+  <li><code>lefts</code> - holds the <em>left</em> values of all rectangles, each with a link to the corresponding rectangle</li>
+  <li><code>rights</code> - same as above, but <em>right</em> values</li>
+  <li><code>tops</code> - same as above, but <em>top</em> values</li>
+  <li><code>bottoms</code> - same as above, but <em>bottom</em> values</li>
+</ul>
+
+<p>The following is a Java solution:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+</pre></td><td class="code"><pre><code class="Java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RectangleStoreImpl</span> <span class="kd">implements</span> <span class="n">RectanglesStore</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">Rectangle</span> <span class="n">bounds</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="n">rectangles</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">numRectangles</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">TreeSet</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">lefts</span><span class="o">,</span> <span class="n">rights</span><span class="o">,</span> <span class="n">tops</span><span class="o">,</span> <span class="n">bottoms</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">PairComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="o">{</span>
+</span><span class="line">        <span class="nd">@Override</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p1</span><span class="o">,</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p2</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="n">Integer</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">getFirst</span><span class="o">(),</span> <span class="n">p2</span><span class="o">.</span><span class="na">getFirst</span><span class="o">());</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">(</span><span class="n">Rectangle</span> <span class="n">bounds</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="n">rectangles</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">bounds</span> <span class="o">=</span> <span class="n">bounds</span><span class="o">;</span>
+</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">rectangles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">rectangles</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">        <span class="kd">final</span> <span class="n">PairComparator</span> <span class="n">comp</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PairComparator</span><span class="o">();</span>
+</span><span class="line">        <span class="n">lefts</span>   <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
+</span><span class="line">        <span class="n">tops</span>    <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
+</span><span class="line">        <span class="n">rights</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
+</span><span class="line">        <span class="n">bottoms</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">        <span class="kt">int</span> <span class="n">numRectangles</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Rectangle</span> <span class="n">r</span> <span class="o">:</span> <span class="n">rectangles</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">getLeft</span><span class="o">()</span>   <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getLeft</span><span class="o">()</span>  <span class="o">||</span>
+</span><span class="line">                <span class="n">r</span><span class="o">.</span><span class="na">getTop</span><span class="o">()</span>    <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getTop</span><span class="o">()</span>   <span class="o">||</span>
+</span><span class="line">                <span class="n">r</span><span class="o">.</span><span class="na">getRight</span><span class="o">()</span>  <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getRight</span><span class="o">()</span> <span class="o">||</span>
+</span><span class="line">                <span class="n">r</span><span class="o">.</span><span class="na">getBottom</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getBottom</span><span class="o">())</span>
+</span><span class="line">                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;rectangle&quot;</span> <span class="o">+</span> <span class="n">r</span> <span class="o">+</span> <span class="s">&quot;is out of bounds&quot;</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">            <span class="n">lefts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span>  <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getLeft</span><span class="o">(),</span>   <span class="n">numRectangles</span><span class="o">));</span>
+</span><span class="line">            <span class="n">tops</span><span class="o">.</span><span class="na">add</span><span class="o">(</span>   <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getTop</span><span class="o">(),</span>    <span class="n">numRectangles</span><span class="o">));</span>
+</span><span class="line">            <span class="n">rights</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getRight</span><span class="o">(),</span>  <span class="n">numRectangles</span><span class="o">));</span>
+</span><span class="line">            <span class="n">bottoms</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getBottom</span><span class="o">(),</span> <span class="n">numRectangles</span><span class="o">));</span>
+</span><span class="line">            <span class="n">numRectangles</span><span class="o">++;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="n">Rectangle</span> <span class="nf">findRectangleAt</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getLeft</span><span class="o">()</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getRight</span><span class="o">()</span> <span class="o">||</span>
+</span><span class="line">            <span class="n">y</span> <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getTop</span><span class="o">()</span>  <span class="o">||</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getBottom</span><span class="o">())</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;requested point is outside of bounding box&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">        <span class="kd">final</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">px0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">x</span><span class="o">,</span> <span class="mi">0</span><span class="o">),</span>
+</span><span class="line">                                     <span class="n">py0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">y</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">        <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span>   <span class="n">rLefts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(),</span>
+</span><span class="line">                               <span class="n">rTops</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(),</span>
+</span><span class="line">                             <span class="n">rRights</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(),</span>
+</span><span class="line">                            <span class="n">rBottoms</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span>   <span class="n">lefts</span><span class="o">.</span><span class="na">headSet</span><span class="o">(</span><span class="n">px0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>  <span class="n">rLefts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span>    <span class="n">tops</span><span class="o">.</span><span class="na">headSet</span><span class="o">(</span><span class="n">py0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>   <span class="n">rTops</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span>  <span class="n">rights</span><span class="o">.</span><span class="na">tailSet</span><span class="o">(</span><span class="n">px0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span> <span class="n">rRights</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span> <span class="n">bottoms</span><span class="o">.</span><span class="na">tailSet</span><span class="o">(</span><span class="n">py0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span><span class="n">rBottoms</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
+</span><span class="line">
+</span><span class="line">        <span class="c1">// since rTops is ordered from top down, the first rectangle found is the topmost</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Integer</span> <span class="n">numRect</span> <span class="o">:</span> <span class="n">rTops</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="o">(</span><span class="n">rBottoms</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">numRect</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+</span><span class="line">                <span class="n">rLefts</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">numRect</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+</span><span class="line">                <span class="n">rRights</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">numRect</span><span class="o">))</span> <span class="o">{</span>
+</span><span class="line">                <span class="k">return</span> <span class="n">rectangles</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">numRect</span><span class="o">);</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>  <span class="c1">// no rectangle was found</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/12/15/celebrities/">Celebrities</a></h1>
     
     
@@ -128,7 +371,7 @@ in a group of people (if both <script type="math/tex">A</script> and <script typ
 The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
 When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
 
-<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \larrow 2n</script>).</p>
+<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \rightarrow 2n</script>).</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -157,6 +400,8 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
 </span><span class="line">
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
   
   
@@ -293,7 +538,7 @@ print an appropriate message to the console. During the race, the client can cal
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort by Length Then Frequency</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a></h1>
     
     
       <p class="meta">
@@ -880,120 +1125,9 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/28/deadly-island/">Deadly Island</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-11-28T06:57:33+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Question</strong>: Imagine an island made of <script type="math/tex">N \times M</script> tiled board, with a man standing in some initial position <script type="math/tex">(x,y)</script>. In each turn, the man steps either up, down, left or right (each
-with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.</p>
-
-<hr />
-
-<p><strong>Solution</strong>: We’ll mark the probabily that the man, located at <script type="math/tex">(x,y)</script> will live for <script type="math/tex">n</script> steps with <script type="math/tex">p(x,y,n)</script>. Using the <a href="http://en.wikipedia.org/wiki/Law_of_total_probability">Law of total probability</a>,
-we can derive the following equation: </p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-
-\begin{split}
-&p(x,y,n) = \\ &\frac{p(x-1,y,n-1) + p(x+1,y,n-1) + p(x,y-1,n-1) + p(x,y+1,n-1)}{4}
-\end{split}
- %]]></script>
-
-<p>Of course, if the man steps outside of the island boundaries, the probability is 0.</p>
-
-<p>This is easy enough to program, but to make it run at reasonable speed, we’ll memoize the probabilities calculated before for certain values of <script type="math/tex">x,y</script> and <script type="math/tex">n</script> (a common idiom 
-in <a href="http://en.wikipedia.org/wiki/Dynamic_programming">Dynamic Programming</a>.
-The following is a Scala implementation:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">DeadlyIsland</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">m</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">val</span> <span class="nc">MaxSteps</span> <span class="k">=</span> <span class="mi">100</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">val</span> <span class="n">memoization</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">.</span><span class="n">ofDim</span><span class="o">[</span><span class="kt">Double</span><span class="o">](</span><span class="n">n</span><span class="o">,</span> <span class="n">m</span><span class="o">,</span> <span class="nc">MaxSteps</span><span class="o">)</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">calculate</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">steps</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">)</span>
-</span><span class="line">      <span class="mf">0.0</span>
-</span><span class="line">    <span class="k">else</span>
-</span><span class="line">      <span class="k">if</span> <span class="o">(</span><span class="n">steps</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
-</span><span class="line">        <span class="mi">1</span>
-</span><span class="line">      <span class="k">else</span>
-</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">memoization</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)(</span><span class="n">steps</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="o">)</span>
-</span><span class="line">            <span class="n">memoization</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)(</span><span class="n">steps</span><span class="o">)</span>
-</span><span class="line">        <span class="k">else</span> <span class="o">{</span>
-</span><span class="line">            <span class="k">val</span> <span class="n">prob</span> <span class="k">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="o">(</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line">            <span class="o">)</span>
-</span><span class="line">            <span class="n">memoization</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)(</span><span class="n">steps</span><span class="o">)</span> <span class="k">=</span> <span class="n">prob</span>
-</span><span class="line">            <span class="n">prob</span>
-</span><span class="line">        <span class="o">}</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>Have any questions / remarks? leave them at the commonts below!</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1014,6 +1148,10 @@ The following is a Scala implementation:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/12/18/rectangles-store/">Rectangles Store</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/12/15/celebrities/">Celebrities</a>
       </li>
     
@@ -1022,15 +1160,11 @@ The following is a Scala implementation:</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort by Length Then Frequency</a>
+        <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/power-set/">Power Set</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/02/log-every-second/">Log Every Second</a>
       </li>
     
   </ul>

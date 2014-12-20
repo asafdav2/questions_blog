@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Sort by length then frequency"
+title: "Sort words by length and frequency"
 date: 2014-12-03 19:32:20 +0200
 comments: true
 categories: [Scala]

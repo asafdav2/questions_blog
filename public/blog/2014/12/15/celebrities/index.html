@@ -125,7 +125,7 @@ in a group of people (if both <script type="math/tex">A</script> and <script typ
 The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
 When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
 
-<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \larrow 2n</script>).</p>
+<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \rightarrow 2n</script>).</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -154,6 +154,8 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
 </span><span class="line">
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
 
 
@@ -202,6 +204,8 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
         <a class="basic-alignment left" href="/blog/2014/12/03/horse_roce/" title="Previous Post: Car Race">&laquo; Car Race</a>
       
       
+        <a class="basic-alignment right" href="/blog/2014/12/18/rectangles-store/" title="Next Post: rectangles store">rectangles store &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -223,6 +227,10 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/12/18/rectangles-store/">Rectangles Store</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/12/15/celebrities/">Celebrities</a>
       </li>
     
@@ -231,15 +239,11 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort by Length Then Frequency</a>
+        <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/power-set/">Power Set</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/02/log-every-second/">Log Every Second</a>
       </li>
     
   </ul>

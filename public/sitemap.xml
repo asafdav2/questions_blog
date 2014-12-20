@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://interviewbits.herokuapp.com/blog/2014/12/18/rectangles-store/</loc>
+    <lastmod>2014-12-18T14:57:53+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/</loc>
     <lastmod>2014-12-15T19:32:20+02:00</lastmod>
     <priority>0.8</priority>
@@ -52,13 +57,13 @@
   </url>
   <url>
     <loc>http://interviewbits.herokuapp.com/blog/archives/</loc>
-    <lastmod>2014-12-18T12:07:32+02:00</lastmod>
+    <lastmod>2014-12-20T10:27:34+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://interviewbits.herokuapp.com/</loc>
-    <lastmod>2014-12-18T12:07:32+02:00</lastmod>
+    <lastmod>2014-12-20T10:27:34+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

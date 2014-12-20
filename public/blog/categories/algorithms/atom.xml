@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithms | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-18T12:07:32+02:00</updated>
+  <updated>2014-12-20T10:27:34+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -42,7 +42,7 @@ in a group of people (if both <script type="math/tex">A</script> and <script typ
 The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
 When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
 
-<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \larrow 2n</script>).</p>
+<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \rightarrow 2n</script>).</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -60,6 +60,8 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
 
 } ```
 </code></pre>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 ]]></content>
   </entry>
   

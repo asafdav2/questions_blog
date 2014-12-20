@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Data Structures | Interview Bits]]></title>
-  <link href="http://interviewbits.herokuapp.com/blog/categories/data-structures/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Java | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
   <updated>2014-12-20T10:27:34+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
@@ -138,32 +138,6 @@ You are required to store these rectangles in an efficient manner (in terms of m
 
 } ```
 </code></pre>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Insert, Remove, Contains and Random in O(1)]]></title>
-    <link href="http://interviewbits.herokuapp.com/blog/2014/11/29/insert/"/>
-    <updated>2014-11-29T22:59:13+02:00</updated>
-    <id>http://interviewbits.herokuapp.com/blog/2014/11/29/insert</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in <script type="math/tex">O(1)</script> (amortized) time complexity.</p>
-
-<hr />
-
-<p><strong>Solution</strong>: Our data structure will be made of two data structures: an array <script type="math/tex">A</script> to holds the items, and a hashtable <script type="math/tex">H</script> that map each item to its position in the array.
-For example, after inserting items ‘b’, ‘a’, ‘z’, the data structures content will be as follows:</p>
-
-<pre><code>A = ['b', 'a', 'z']
-B = {'a' : 1, 'b' : 0, 'z' : 2}
-</code></pre>
-
-<ul>
-  <li>insert(v): append <script type="math/tex">v</script> to <script type="math/tex">A</script> (let <script type="math/tex">i</script> be it’s index). Set <script type="math/tex">H[v] = i</script>.</li>
-  <li>remove(v): let <script type="math/tex">m</script> be the last index in <script type="math/tex">A</script> and let <script type="math/tex">d=A[m]</script>. let <script type="math/tex">i= H[v]</script> (that is, the index in <script type="math/tex">A</script> of the value to be removed). Set <script type="math/tex">A[i]=d</script>, <script type="math/tex">H[d]=i</script>, decrease the size of the array by one and remove <script type="math/tex">H[v]</script>.</li>
-  <li>contains(v): return <script type="math/tex">H.contains(value)</script></li>
-  <li>getRandomElement(): let <script type="math/tex">r</script>=random(current size of A). return <script type="math/tex">A[r]</script>.</li>
-</ul>
 
 ]]></content>
   </entry>
