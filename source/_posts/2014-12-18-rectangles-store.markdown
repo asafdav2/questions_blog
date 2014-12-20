@@ -36,13 +36,25 @@ Note: The solution should support a large number of rectangles, and an extremely
 
 **Solution**:
 
-In addition to the rectangles themselves, our solution will maintain the following 4 sorted sets: 
+In addition to the rectangles themselves, our solution will maintain 4 sorted sets: 
 
-* ```lefts``` - holds the *left* values of all rectangles, each with a link to the corresponding rectangle
-* ```rights``` - same as above, but *right* values
-* ```tops``` - same as above, but *top* values
-* ```bottoms``` - same as above, but *bottom* values
+* ```lefts``` - holds the *left* values of all rectangles
+* ```rights``` - holds the *right* values of all rectangles 
+* ```tops``` - holds the *top* values of all rectangles  
+* ```bottoms``` - holds the *bottom* values of all rectangles
 
+Each entry in the preceeding sets will also hold the id of the corresponding rectangle.
+
+Now, given $$x,y$$ coordinates is input to ```findRectangleAt```, we can filter all relevant rectangles:
+
+* ```rLefts``` - list of rectangle id for all ```left``` entries having value *lower* than $$x$$.
+* ```rRights``` - list of rectangle id for all ```right``` entries having value *greater* than $$x$$.
+* ```rTops``` - list of rectangle id for all ```tops``` entries having value *lower* than $$y$$.
+* ```rBottoms``` - list of rectangle id for all ```bottoms``` entries having value *greater* than $$y$$.
+
+The point $$(x,y)$$ is contained in every rectangle whose id appears in the 4 afromentioned lists.
+Since we want to return the topmost such rectangle, and since the ids in ```rTops``` are sorted according to an ascending $$y$$ value,
+we can simply look for the first id in ```rTops``` that alse appear in ```rLefts```, ```rRights``` and ```rBottoms``` and return it.
 
 The following is a Java solution:
 
@@ -124,3 +136,4 @@ The following is a Java solution:
     }
 ```
 
+Have any questions / remarks? leave them at the commonts below!

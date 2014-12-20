@@ -47,6 +47,18 @@ MathJax.Hub.Config({
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-54999211-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -54,7 +66,7 @@ MathJax.Hub.Config({
   <header role="banner"><hgroup>
   <h1><a href="/">Interview Bits</a></h1>
   
-    <h2>Software development interview questions and solutions</h2>
+    <h2>Software-development interview questions and solutions</h2>
   
 </hgroup>
 
@@ -94,6 +106,9 @@ MathJax.Hub.Config({
 
 
 <time datetime="2014-11-29T22:59:13+02:00" pubdate data-updated="true"></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://interviewbits.herokuapp.com">Comments</a>
         
       </p>
     
@@ -158,6 +173,8 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
   
   
   
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
 
     
@@ -171,6 +188,12 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -240,7 +263,32 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
 </footer>
   
 
+<script type="text/javascript">
+      var disqus_shortname = 'interviewbits';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://interviewbits.herokuapp.com/blog/2014/11/29/insert/';
+        var disqus_url = 'http://interviewbits.herokuapp.com/blog/2014/11/29/insert/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 
 

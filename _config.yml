@@ -4,7 +4,7 @@
 
 url: http://interviewbits.herokuapp.com
 title: Interview Bits
-subtitle: Software development interview questions and solutions
+subtitle: Software-development interview questions and solutions
 author: Asaf David
 simple_search: https://www.google.com/search
 description:
@@ -91,11 +91,11 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
-disqus_show_comment_count: false
+disqus_short_name: interviewbits
+disqus_show_comment_count: true
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-54999211-4
 
 # Facebook Like
-facebook_like: false
+facebook_like: true
