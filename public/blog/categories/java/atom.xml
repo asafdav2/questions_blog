@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-20T11:26:47+02:00</updated>
+  <updated>2014-12-21T23:55:35+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -61,7 +61,7 @@ You are required to store these rectangles in an efficient manner (in terms of m
 
 <p>Each entry in the preceeding sets will also hold the id of the corresponding rectangle.</p>
 
-<p>Now, given <script type="math/tex">x,y</script> coordinates is input to <code>findRectangleAt</code>, we can filter all relevant rectangles:</p>
+<p>Now, given <script type="math/tex">x,y</script> coordinates as input to <code>findRectangleAt</code>, we can filter all relevant rectangles:</p>
 
 <ul>
   <li><code>rLefts</code> - list of rectangle id for all <code>left</code> entries having value <em>lower</em> than <script type="math/tex">x</script>.</li>

@@ -45,7 +45,7 @@ In addition to the rectangles themselves, our solution will maintain 4 sorted se
 
 Each entry in the preceeding sets will also hold the id of the corresponding rectangle.
 
-Now, given $$x,y$$ coordinates is input to ```findRectangleAt```, we can filter all relevant rectangles:
+Now, given $$x,y$$ coordinates as input to ```findRectangleAt```, we can filter all relevant rectangles:
 
 * ```rLefts``` - list of rectangle id for all ```left``` entries having value *lower* than $$x$$.
 * ```rRights``` - list of rectangle id for all ```right``` entries having value *greater* than $$x$$.
