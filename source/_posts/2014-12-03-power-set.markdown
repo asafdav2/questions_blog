@@ -21,3 +21,5 @@ The following is a Scala implementation:
       rec ::: rec.map(s => s + n)
     }
 ```
+
+Have any questions / remarks? leave them at the commonts below!

@@ -6,7 +6,7 @@ comments: true
 categories: [Javascript]
 ---
 
-**Question**: Please write a program which will log an increasing integer, once every second.
+**Question**: Please write a program which will log the sequence 1, 2, 3... , one number every second.
 
 ---
 
@@ -14,6 +14,7 @@ categories: [Javascript]
 The following is a simple Javascript implementation:
 
 ``` Javascript
+(function() {
     var i = 0;
     var delay = 1000;
     var logger = function() {
@@ -23,9 +24,10 @@ The following is a simple Javascript implementation:
     }
     
     logger();
+})();
 ```
 
-**Follow-up Question**: Can we be centain that the delay between two consecutive loggings will be exactly 1 second? If not, how would you improve it?
+**Follow-up Question**: Can we be centain that the delay between two logging of two consecutive integerss will be exactly 1 second? If not, how would you improve it?
 
 **Solution**: An important concept to remember is that with Javascript timers, delay is not guaranteed. The browser operates in a single thread manner, processing
 events that accumulate in an events queue and handles them sequentially. This means that there may be a slight delay between the moment that the event was fired and

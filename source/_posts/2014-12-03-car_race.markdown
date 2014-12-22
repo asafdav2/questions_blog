@@ -6,8 +6,9 @@ comments: true
 categories: [Javascript]
 ---
 
-**Question**: In this question we model a car race. The race is initialized with a length and an array of speeds for each car. When a car wins, you should
-print an appropriate message to the console. During the race, the client can call update(car_id, speed).
+**Question**: Imagine a car race, where a bunch of cars are about to drive for a certain distance on a linear track. 
+Given the track length and the initial speed of every car, you should print a message when some car wins the race.
+As cars speed is not constant, you should expose function ```update(car_id, speed)``` which is used to update the current speed of certain car.
 
 **Solution**:
 

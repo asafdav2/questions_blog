@@ -7,7 +7,7 @@ categories: [Binary Search, Scala]
 ---
 
 **Question**: We are givan an array $$A$$ (with size $$n$$) where every cell holds either '+' or '-'.
-We're told that $$A[0]$$ = '+' and that $$A[n-1]$$ = '-'. Describe an algorithm to find index $$j$$ such that $$A[j]$$ = '+'
+We're told that $$A[0]$$ = '+' and that $$A[n-1]$$ = '-'. Describe an algorithm to find an index $$j$$ such that $$A[j]$$ = '+'
 and $$A[j+1]$$ = '-'.
 
 **Example**: 
@@ -15,7 +15,7 @@ and $$A[j+1]$$ = '-'.
 |A |+|+|-|+|+|+|-|-|+|-|
 |id|0|1|2|3|4|5|6|7|8|9|
 
-Correct answers in this example are $$j=1$$, $$j=5$$, $$j=8$$ (each one is acceptable, no need to return them all).
+Correct answers for this example are $$j=1$$, $$j=5$$ or $$j=8$$ (each one is acceptable, no need to return them all).
 
 ---
 
@@ -24,6 +24,8 @@ variables, $$l$$ and $$h$$, and maintain the following invariant: $$A[l]$$ = '+'
 we'll check if $$r=l+1$$. If so, we're done. else, we find the center point $$c=\frac{l+r}{2}$$. If $$A[c$$] = '+' we'll
 update $$l=c$$, else $$r=c$$. Since in each step the distance between $$l$$ and $$r$$ diminishes, we know the process
 will eventually terminate.
+
+The following is a Scala implementation:
 
 
 ``` Scala

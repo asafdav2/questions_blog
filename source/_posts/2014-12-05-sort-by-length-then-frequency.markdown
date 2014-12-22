@@ -6,38 +6,24 @@ comments: true
 categories: [Scala]
 ---
 
-**Question**: Implement a function that takes a file name of text file that contains words (each in a different line, 
-words may apper more than once), and returns the list of words (without duplications), sorted first by word 
-length (descending) and then by number of occurrences (descending).
+**Question**: Implement a function that takes an unordered list of words (assume words may apper more than once), 
+and returns a list of distinct words (that is, without duplications), sorted first by word 
+length (descending) and then by the number of occurrences in the input list (descending as well).
 
-In other words, the longest word will appear first in the list. In case there are several words with the same
-length, their inner order will be according to their appearences frequency.
+**Example**: 
 
-**Example**: assume the file ```words.txt``` contain the following content:
-
-    ABC
-    ABC
-    ABB
-    ABCDE
-    A
-    B
-    B
-    B
-
-Then running ```sort("words.txt")``` should return the following result:
- 
-    ABCDE ABC ABB B A
+    sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ]
 
 ---
 
-**Solution**:
+**Solution**: Our solution is functional by nature. There are two functions: ```occurrences```, which takes a list of words and return a list of (word, occurrences)
+pairs, and ```sort```, which takes the result of ```occurrences```, sort the pairs according to the required order (first by length, then by occurrences) and strips
+the occurrences amount from each pair, so the result will only contain the words.
 
 The following is a Scala implementation:
 
 ``` Scala
     class Sorter {
-    
-      def sort(filename: String): List[String] = sort(scala.io.Source.fromFile(filename).getLines().toList)
     
       def sort(words: List[String]): List[String] = 
         occurrences(words).toList
@@ -51,3 +37,5 @@ The following is a Scala implementation:
     
     }
 ```
+
+Have any questions / remarks? leave them at the commonts below!
