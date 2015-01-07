@@ -7,7 +7,7 @@ categories: [Data structures]
 ---
 
 **Question**: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in $$O(1)$$ (amortized) time complexity.
-
+<!--more-->
 ---
 
 **Solution**: Our data structure will be made of two data structures: an array $$A$$ to holds the items, and a hashtable $$H$$ that map each item to its position in the array.

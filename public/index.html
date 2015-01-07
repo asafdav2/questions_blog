@@ -159,192 +159,13 @@ You are required to store these rectangles in an efficient manner (in terms of m
 
 <ul>
   <li>a simple collection of rectangles (isn’t efficient enough performance-wise)</li>
-  <li>a map of each point to its corresponding rectangle (isn’t efficient enough memory-wise)</li>
-</ul>
-
-<p><strong>Solution</strong>:</p>
-
-<p>In addition to the rectangles themselves, our solution will maintain 4 sorted sets: </p>
-
-<ul>
-  <li><code>lefts</code> - holds the <em>left</em> values of all rectangles</li>
-  <li><code>rights</code> - holds the <em>right</em> values of all rectangles </li>
-  <li><code>tops</code> - holds the <em>top</em> values of all rectangles  </li>
-  <li><code>bottoms</code> - holds the <em>bottom</em> values of all rectangles</li>
-</ul>
-
-<p>Each entry in the preceeding sets will also hold the id of the corresponding rectangle.</p>
-
-<p>Now, given <script type="math/tex">x,y</script> coordinates as input to <code>findRectangleAt</code>, we can filter all relevant rectangles:</p>
-
-<ul>
-  <li><code>rLefts</code> - list of rectangle id for all <code>left</code> entries having value <em>lower</em> than <script type="math/tex">x</script>.</li>
-  <li><code>rRights</code> - list of rectangle id for all <code>right</code> entries having value <em>greater</em> than <script type="math/tex">x</script>.</li>
-  <li><code>rTops</code> - list of rectangle id for all <code>tops</code> entries having value <em>lower</em> than <script type="math/tex">y</script>.</li>
-  <li><code>rBottoms</code> - list of rectangle id for all <code>bottoms</code> entries having value <em>greater</em> than <script type="math/tex">y</script>.</li>
-</ul>
-
-<p>The point <script type="math/tex">(x,y)</script> is contained in every rectangle whose id appears in the 4 afromentioned lists.
-Since we want to return the topmost such rectangle, and since the ids in <code>rTops</code> are sorted according to an ascending <script type="math/tex">y</script> value,
-we can simply look for the first id in <code>rTops</code> that alse appear in <code>rLefts</code>, <code>rRights</code> and <code>rBottoms</code> and return it.</p>
-
-<p>The following is a Java solution:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-<span class="line-number">54</span>
-<span class="line-number">55</span>
-<span class="line-number">56</span>
-<span class="line-number">57</span>
-<span class="line-number">58</span>
-<span class="line-number">59</span>
-<span class="line-number">60</span>
-<span class="line-number">61</span>
-<span class="line-number">62</span>
-<span class="line-number">63</span>
-<span class="line-number">64</span>
-<span class="line-number">65</span>
-<span class="line-number">66</span>
-<span class="line-number">67</span>
-<span class="line-number">68</span>
-<span class="line-number">69</span>
-<span class="line-number">70</span>
-<span class="line-number">71</span>
-<span class="line-number">72</span>
-<span class="line-number">73</span>
-<span class="line-number">74</span>
-<span class="line-number">75</span>
-</pre></td><td class="code"><pre><code class="Java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RectangleStoreImpl</span> <span class="kd">implements</span> <span class="n">RectanglesStore</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="kd">private</span> <span class="n">Rectangle</span> <span class="n">bounds</span><span class="o">;</span>
-</span><span class="line">    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="n">rectangles</span><span class="o">;</span>
-</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">numRectangles</span><span class="o">;</span>
-</span><span class="line">    <span class="kd">private</span> <span class="n">TreeSet</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">lefts</span><span class="o">,</span> <span class="n">rights</span><span class="o">,</span> <span class="n">tops</span><span class="o">,</span> <span class="n">bottoms</span><span class="o">;</span>
-</span><span class="line">
-</span><span class="line">    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">PairComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="o">{</span>
-</span><span class="line">        <span class="nd">@Override</span>
-</span><span class="line">        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p1</span><span class="o">,</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p2</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">            <span class="k">return</span> <span class="n">Integer</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">getFirst</span><span class="o">(),</span> <span class="n">p2</span><span class="o">.</span><span class="na">getFirst</span><span class="o">());</span>
-</span><span class="line">        <span class="o">}</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="nd">@Override</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">(</span><span class="n">Rectangle</span> <span class="n">bounds</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="n">rectangles</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">bounds</span> <span class="o">=</span> <span class="n">bounds</span><span class="o">;</span>
-</span><span class="line">        <span class="k">this</span><span class="o">.</span><span class="na">rectangles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">rectangles</span><span class="o">);</span>
-</span><span class="line">
-</span><span class="line">        <span class="kd">final</span> <span class="n">PairComparator</span> <span class="n">comp</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PairComparator</span><span class="o">();</span>
-</span><span class="line">        <span class="n">lefts</span>   <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
-</span><span class="line">        <span class="n">tops</span>    <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
-</span><span class="line">        <span class="n">rights</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
-</span><span class="line">        <span class="n">bottoms</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;(</span><span class="n">comp</span><span class="o">);</span>
-</span><span class="line">
-</span><span class="line">        <span class="kt">int</span> <span class="n">numRectangles</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-</span><span class="line">
-</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Rectangle</span> <span class="n">r</span> <span class="o">:</span> <span class="n">rectangles</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">            <span class="k">if</span> <span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">getLeft</span><span class="o">()</span>   <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getLeft</span><span class="o">()</span>  <span class="o">||</span>
-</span><span class="line">                <span class="n">r</span><span class="o">.</span><span class="na">getTop</span><span class="o">()</span>    <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getTop</span><span class="o">()</span>   <span class="o">||</span>
-</span><span class="line">                <span class="n">r</span><span class="o">.</span><span class="na">getRight</span><span class="o">()</span>  <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getRight</span><span class="o">()</span> <span class="o">||</span>
-</span><span class="line">                <span class="n">r</span><span class="o">.</span><span class="na">getBottom</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getBottom</span><span class="o">())</span>
-</span><span class="line">                <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;rectangle&quot;</span> <span class="o">+</span> <span class="n">r</span> <span class="o">+</span> <span class="s">&quot;is out of bounds&quot;</span><span class="o">);</span>
-</span><span class="line">
-</span><span class="line">            <span class="n">lefts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span>  <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getLeft</span><span class="o">(),</span>   <span class="n">numRectangles</span><span class="o">));</span>
-</span><span class="line">            <span class="n">tops</span><span class="o">.</span><span class="na">add</span><span class="o">(</span>   <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getTop</span><span class="o">(),</span>    <span class="n">numRectangles</span><span class="o">));</span>
-</span><span class="line">            <span class="n">rights</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getRight</span><span class="o">(),</span>  <span class="n">numRectangles</span><span class="o">));</span>
-</span><span class="line">            <span class="n">bottoms</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">r</span><span class="o">.</span><span class="na">getBottom</span><span class="o">(),</span> <span class="n">numRectangles</span><span class="o">));</span>
-</span><span class="line">            <span class="n">numRectangles</span><span class="o">++;</span>
-</span><span class="line">        <span class="o">}</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="nd">@Override</span>
-</span><span class="line">    <span class="kd">public</span> <span class="n">Rectangle</span> <span class="nf">findRectangleAt</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getLeft</span><span class="o">()</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getRight</span><span class="o">()</span> <span class="o">||</span>
-</span><span class="line">            <span class="n">y</span> <span class="o">&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getTop</span><span class="o">()</span>  <span class="o">||</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="o">.</span><span class="na">getBottom</span><span class="o">())</span> <span class="o">{</span>
-</span><span class="line">            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;requested point is outside of bounding box&quot;</span><span class="o">);</span>
-</span><span class="line">        <span class="o">}</span>
-</span><span class="line">        <span class="kd">final</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">px0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">x</span><span class="o">,</span> <span class="mi">0</span><span class="o">),</span>
-</span><span class="line">                                     <span class="n">py0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;(</span><span class="n">y</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
-</span><span class="line">
-</span><span class="line">        <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span>   <span class="n">rLefts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(),</span>
-</span><span class="line">                               <span class="n">rTops</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(),</span>
-</span><span class="line">                             <span class="n">rRights</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(),</span>
-</span><span class="line">                            <span class="n">rBottoms</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
-</span><span class="line">
-</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span>   <span class="n">lefts</span><span class="o">.</span><span class="na">headSet</span><span class="o">(</span><span class="n">px0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>  <span class="n">rLefts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
-</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span>    <span class="n">tops</span><span class="o">.</span><span class="na">headSet</span><span class="o">(</span><span class="n">py0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>   <span class="n">rTops</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
-</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span>  <span class="n">rights</span><span class="o">.</span><span class="na">tailSet</span><span class="o">(</span><span class="n">px0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span> <span class="n">rRights</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
-</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Pair</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">:</span> <span class="n">bottoms</span><span class="o">.</span><span class="na">tailSet</span><span class="o">(</span><span class="n">py0</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span><span class="n">rBottoms</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getRight</span><span class="o">());}</span>
-</span><span class="line">
-</span><span class="line">        <span class="c1">// since rTops is ordered from top down, the first rectangle found is the topmost</span>
-</span><span class="line">
-</span><span class="line">        <span class="k">for</span> <span class="o">(</span><span class="n">Integer</span> <span class="n">numRect</span> <span class="o">:</span> <span class="n">rTops</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">            <span class="k">if</span> <span class="o">(</span><span class="n">rBottoms</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">numRect</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
-</span><span class="line">                <span class="n">rLefts</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">numRect</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
-</span><span class="line">                <span class="n">rRights</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">numRect</span><span class="o">))</span> <span class="o">{</span>
-</span><span class="line">                <span class="k">return</span> <span class="n">rectangles</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">numRect</span><span class="o">);</span>
-</span><span class="line">            <span class="o">}</span>
-</span><span class="line">        <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>  <span class="c1">// no rectangle was found</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Have any questions / remarks? leave them at the commonts below!</p>
+  <li>a map of each point to its corresponding rectangle (isn’t efficient enough memory-wise)
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/18/rectangles-store/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -394,50 +215,13 @@ C knows A
 D knows B
 </code></pre>
 
-<p>Then the result should be <script type="math/tex">B</script>.</p>
-
-<hr />
-
-<p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
-in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>
-
-<p>The main idea is that given 2 potential celebrities, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <script type="math/tex">A</script> knows <script type="math/tex">B</script> then we can eliminate <script type="math/tex">A</script>, else we can eliminate <script type="math/tex">B</script>). 
-The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
-When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
-
-<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \rightarrow 2n</script>).</p>
-
-<p>The following is a Scala implementation:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Celebrities</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">def</span> <span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">people</span> <span class="k">match</span> <span class="o">{</span>
-</span><span class="line">        <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
-</span><span class="line">        <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">b</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">))</span> <span class="n">b</span> <span class="k">else</span> <span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">diminish</span><span class="o">(</span><span class="n">rest</span><span class="o">)</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">def</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
-</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">people</span><span class="o">.</span><span class="n">head</span>
-</span><span class="line">        <span class="k">else</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="o">))</span>
-</span><span class="line">
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Have any questions / remarks? leave them at the commonts below!</p>
+<p>Then the result should be <script type="math/tex">B</script>.
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/15/celebrities/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -448,7 +232,51 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/12/03/horse_roce/">Car Race</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-11T21:12:24+02:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/12/11/random-number-with-distribution/#disqus_thread"
+             data-disqus-identifier="http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
+For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/11/random-number-with-distribution/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/03/car_race/">Car Race</a></h1>
     
     
       <p class="meta">
@@ -466,105 +294,23 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
 
 <time datetime="2014-12-03T21:55:07+02:00" pubdate data-updated="true"></time>
         
-           | <a href="/blog/2014/12/03/horse_roce/#disqus_thread"
-             data-disqus-identifier="http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/">Comments</a>
+           | <a href="/blog/2014/12/03/car_race/#disqus_thread"
+             data-disqus-identifier="http://interviewbits.herokuapp.com/blog/2014/12/03/car_race/">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p><strong>Question</strong>: In this question we model a car race. The race is initialized with a length and an array of speeds for each car. When a car wins, you should
-print an appropriate message to the console. During the race, the client can call update(car_id, speed).</p>
-
-<p><strong>Solution</strong>:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-</pre></td><td class="code"><pre><code class="Javascript"><span class="line"><span class="kd">function</span> <span class="nx">Race</span><span class="p">(</span><span class="nx">len</span><span class="p">,</span> <span class="nx">speeds</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">speeds</span> <span class="o">=</span> <span class="nx">speeds</span><span class="p">;</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">remain</span> <span class="o">=</span> <span class="p">[];</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">lastUpdate</span> <span class="o">=</span> <span class="nx">getMillis</span><span class="p">();</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">!=</span> <span class="nx">speeds</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">        <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">len</span> <span class="o">/</span> <span class="nx">speeds</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">triggerTimeoutForLeader</span><span class="p">();</span>
-</span><span class="line"><span class="p">}</span>
-</span><span class="line">
-</span><span class="line"><span class="nx">Race</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">triggerTimeoutForLeader</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class="line">    <span class="kd">var</span> <span class="nx">min</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nb">Math</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">);</span>
-</span><span class="line">    <span class="kd">var</span> <span class="nx">minId</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">min</span><span class="p">);</span>
-</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">        <span class="nx">clearTimeout</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">to</span><span class="p">);</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">to</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="nx">winner</span><span class="p">(</span><span class="nx">minId</span><span class="p">)</span> <span class="p">},</span> <span class="nx">min</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
-</span><span class="line"><span class="p">};</span>
-</span><span class="line">
-</span><span class="line"><span class="nx">Race</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">    <span class="kd">var</span> <span class="nx">millis</span> <span class="o">=</span> <span class="nx">getMillis</span><span class="p">();</span>
-</span><span class="line">    <span class="kd">var</span> <span class="nx">elapsed</span> <span class="o">=</span> <span class="p">(</span><span class="nx">millis</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">lastUpdate</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">;</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">lastUpdate</span> <span class="o">=</span> <span class="nx">millis</span><span class="p">;</span>
-</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">        <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-</span> <span class="nx">elapsed</span><span class="p">;</span>
-</span><span class="line">    <span class="p">}</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">remain</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">speeds</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">/</span> <span class="nx">speed</span><span class="p">;</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">speeds</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">speed</span><span class="p">;</span>
-</span><span class="line">    <span class="k">this</span><span class="p">.</span><span class="nx">triggerTimeoutForLeader</span><span class="p">();</span>
-</span><span class="line"><span class="p">};</span>
-</span><span class="line">
-</span><span class="line"><span class="kd">var</span> <span class="nx">winner</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Car&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;has won the race!&#39;</span><span class="p">);</span>
-</span><span class="line"><span class="p">};</span>
-</span><span class="line">
-</span><span class="line"><span class="kd">var</span> <span class="nx">getMillis</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class="line">    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
-</span><span class="line">    <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getTime</span><span class="p">();</span>
-</span><span class="line"><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>Have any questions / remarks? leave them at the commonts below!</p>
+  <div class="entry-content"><p><strong>Question</strong>: Imagine a car race, where a bunch of cars are about to drive for a certain distance on a linear track. 
+Given the track length and the initial speed of every car, you should print a message when some car wins the race.
+As cars speed is not constant, you should expose function <code>update(car_id, speed)</code> which is used to update the current speed of certain car.
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/03/car_race/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -601,33 +347,18 @@ print an appropriate message to the console. During the race, the client can cal
   </header>
 
 
-  <div class="entry-content"><p><strong>Question</strong>: Implement a function that takes a file name of text file that contains words (each in a different line, 
-words may apper more than once), and returns the list of words (without duplications), sorted first by word 
-length (descending) and then by number of occurrences (descending).</p>
+  <div class="entry-content"><p><strong>Question</strong>: Implement a function that takes an unordered list of words (assume words may apper more than once), 
+and returns a list of distinct words (that is, without duplications), sorted first by word 
+length (descending) and then by the number of occurrences in the input list (descending as well).</p>
 
-<p>In other words, the longest word will appear first in the list. In case there are several words with the same
-length, their inner order will be according to their appearences frequency.</p>
+<p><strong>Example</strong>: </p>
 
-<p><strong>Example</strong>: assume the file <code>words.txt</code> contain the following content:</p>
-
-<pre><code>ABC
-ABC
-ABB
-ABCDE
-A
-B
-B
-B
+<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ] &lt;!--more--&gt; ---
 </code></pre>
 
-<p>Then running <code>sort("words.txt")</code> should return the following result:</p>
-
-<pre><code>ABCDE ABC ABB B A
-</code></pre>
-
-<hr />
-
-<p><strong>Solution</strong>:</p>
+<p><strong>Solution</strong>: Our solution is functional by nature. There are two functions: <code>occurrences</code>, which takes a list of words and return a list of (word, occurrences)
+pairs, and <code>sort</code>, which takes the result of <code>occurrences</code>, sort the pairs according to the required order (first by length, then by occurrences) and strips
+the occurrences amount from each pair, so the result will only contain the words.</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -644,11 +375,7 @@ B
 <span class="line-number">11</span>
 <span class="line-number">12</span>
 <span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
 </pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Sorter</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">sort</span><span class="o">(</span><span class="n">filename</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="n">sort</span><span class="o">(</span><span class="n">scala</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="n">filename</span><span class="o">).</span><span class="n">getLines</span><span class="o">().</span><span class="n">toList</span><span class="o">)</span>
 </span><span class="line">
 </span><span class="line">  <span class="k">def</span> <span class="n">sort</span><span class="o">(</span><span class="n">words</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span>
 </span><span class="line">    <span class="n">occurrences</span><span class="o">(</span><span class="n">words</span><span class="o">).</span><span class="n">toList</span>
@@ -662,6 +389,8 @@ B
 </span><span class="line">
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
   
   
@@ -700,26 +429,13 @@ B
   </header>
 
 
-  <div class="entry-content"><p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.</p>
-
-<hr />
-
-<p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
-the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
-
-<p>The following is a Scala implementation:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">def</span> <span class="n">powerSet</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Set</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="nc">List</span><span class="o">(</span><span class="nc">Set</span><span class="o">[</span><span class="kt">Int</span><span class="o">]())</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class="line">  <span class="k">val</span> <span class="n">rec</span> <span class="k">=</span> <span class="n">powerSet</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line">  <span class="n">rec</span> <span class="o">:::</span> <span class="n">rec</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">s</span> <span class="k">=&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="n">n</span><span class="o">)</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+  <div class="entry-content"><p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/03/power-set/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -756,43 +472,13 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
   </header>
 
 
-  <div class="entry-content"><p><strong>Question</strong>: Please write a program which will log an increasing integer, once every second.</p>
-
-<hr />
-
-<p><strong>Solution</strong>:
-The following is a simple Javascript implementation:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class="Javascript"><span class="line"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class="line"><span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
-</span><span class="line"><span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class="line">  <span class="o">++</span><span class="nx">i</span><span class="p">;</span>
-</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
-</span><span class="line">  <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">logger</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-</span><span class="line"><span class="p">}</span>
-</span><span class="line">
-</span><span class="line"><span class="nx">logger</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><strong>Follow-up Question</strong>: Can we be centain that the delay between two consecutive loggings will be exactly 1 second? If not, how would you improve it?</p>
-
-<p><strong>Solution</strong>: An important concept to remember is that with Javascript timers, delay is not guaranteed. The browser operates in a single thread manner, processing
-events that accumulate in an events queue and handles them sequentially. This means that there may be a slight delay between the moment that the event was fired and
-the moment that the browser started to process it.</p>
-
-<p>To improve the delays accurancy we can run this code in a dedicated thread, by utilizing a <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Performance/Using_web_workers">web worker</a>.</p>
-
+  <div class="entry-content"><p><strong>Question</strong>: Please write a program which will log the sequence 1, 2, 3… , one number every second.
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/02/log-every-second/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -830,7 +516,7 @@ the moment that the browser started to process it.</p>
 
 
   <div class="entry-content"><p><strong>Question</strong>: We are givan an array <script type="math/tex">A</script> (with size <script type="math/tex">n</script>) where every cell holds either ‘+’ or ‘-‘.
-We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
+We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find an index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
 and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
 
 <p><strong>Example</strong>: </p>
@@ -866,52 +552,13 @@ and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
   </tbody>
 </table>
 
-<p>Correct answers in this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script>, <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).</p>
-
-<hr />
-
-<p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
-variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step
-we’ll check if <script type="math/tex">r=l+1</script>. If so, we’re done. else, we find the center point <script type="math/tex">c=\frac{l+r}{2}</script>. If <script type="math/tex">A[c</script>] = ‘+’ we’ll
-update <script type="math/tex">l=c</script>, else <script type="math/tex">r=c</script>. Since in each step the distance between <script type="math/tex">l</script> and <script type="math/tex">r</script> diminishes, we know the process
-will eventually terminate.</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">PlusMinusArray</span> <span class="o">{</span>
-</span><span class="line"><span class="k">def</span> <span class="n">search</span><span class="o">(</span><span class="n">array</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Char</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">  <span class="k">def</span> <span class="n">searchInner</span><span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">h</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">h</span> <span class="o">==</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="n">l</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class="line">      <span class="k">val</span> <span class="n">mid</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">l</span> <span class="o">+</span> <span class="o">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">l</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span>
-</span><span class="line">      <span class="n">array</span><span class="o">(</span><span class="n">mid</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
-</span><span class="line">        <span class="k">case</span> <span class="sc">&#39;+&#39;</span> <span class="k">=&gt;</span> <span class="n">searchInner</span><span class="o">(</span><span class="n">mid</span><span class="o">,</span> <span class="n">h</span><span class="o">)</span>
-</span><span class="line">        <span class="k">case</span> <span class="sc">&#39;-&#39;</span> <span class="k">=&gt;</span> <span class="n">searchInner</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">mid</span><span class="o">)</span>
-</span><span class="line">        <span class="k">case</span> <span class="k">_</span>   <span class="k">=&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;invalid character &quot;</span> <span class="o">+</span> <span class="n">array</span><span class="o">(</span><span class="n">mid</span><span class="o">))</span>
-</span><span class="line">      <span class="o">}</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">  <span class="n">searchInner</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line"><span class="o">}</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>Have any questions / remarks? leave them at the commonts below!</p>
+<p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/01/plus-minus-array/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -948,26 +595,13 @@ will eventually terminate.</p>
   </header>
 
 
-  <div class="entry-content"><p><strong>Question</strong>: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in <script type="math/tex">O(1)</script> (amortized) time complexity.</p>
-
-<hr />
-
-<p><strong>Solution</strong>: Our data structure will be made of two data structures: an array <script type="math/tex">A</script> to holds the items, and a hashtable <script type="math/tex">H</script> that map each item to its position in the array.
-For example, after inserting items ‘b’, ‘a’, ‘z’, the data structures content will be as follows:</p>
-
-<pre><code>A = ['b', 'a', 'z']
-B = {'a' : 1, 'b' : 0, 'z' : 2}
-</code></pre>
-
-<ul>
-  <li>insert(v): append <script type="math/tex">v</script> to <script type="math/tex">A</script> (let <script type="math/tex">i</script> be it’s index). Set <script type="math/tex">H[v] = i</script>.</li>
-  <li>remove(v): let <script type="math/tex">m</script> be the last index in <script type="math/tex">A</script> and let <script type="math/tex">d=A[m]</script>. let <script type="math/tex">i= H[v]</script> (that is, the index in <script type="math/tex">A</script> of the value to be removed). Set <script type="math/tex">A[i]=d</script>, <script type="math/tex">H[d]=i</script>, decrease the size of the array by one and remove <script type="math/tex">H[v]</script>.</li>
-  <li>contains(v): return <script type="math/tex">H.contains(value)</script></li>
-  <li>getRandomElement(): let <script type="math/tex">r</script>=random(current size of A). return <script type="math/tex">A[r]</script>.</li>
-</ul>
-
+  <div class="entry-content"><p><strong>Question</strong>: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in <script type="math/tex">O(1)</script> (amortized) time complexity.
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/29/insert/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -978,7 +612,7 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/11/29/square-root/">Square Root</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/11/29/square-root/">Square Root (Solution)</a></h1>
     
     
       <p class="meta">
@@ -1004,180 +638,15 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
   </header>
 
 
-  <div class="entry-content"><p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> (that is, find <script type="math/tex">y</script> such that <script type="math/tex">% <![CDATA[
- \lvert \sqrt{x} - y \rvert < \epsilon %]]></script>). Obviously, you’re not allowed to use the startand <code>sqrt</code> function. </p>
-
-<hr />
-
-<p><strong>Solution</strong>: The general idea is to guess a solution <script type="math/tex">y</script> and then iteratively improve it. If <script type="math/tex">y^2 > x</script>, we should aim lower, so in the next step we’ll try <script type="math/tex">y - stepSize</script>. 
-else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. In each step we’ll halve the <script type="math/tex">stepSize</script>.</p>
-
-<p>The following is a Scala implementation:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Sqrt</span> <span class="o">{</span>
-</span><span class="line">  <span class="k">def</span> <span class="n">sqrt</span><span class="o">(</span><span class="n">x</span> <span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">err</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="n">sqrtHelper</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">err</span><span class="o">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span><span class="o">,</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">x</span><span class="o">)</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">sqrtHelper</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">allowedError</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">curr</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">stepSize</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">val</span> <span class="n">err</span> <span class="k">=</span> <span class="n">x</span> <span class="o">-</span> <span class="o">(</span><span class="n">curr</span> <span class="o">*</span> <span class="n">curr</span><span class="o">)</span>
-</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="nc">Math</span><span class="o">.</span><span class="n">abs</span><span class="o">(</span><span class="n">err</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">allowedError</span><span class="o">)</span>
-</span><span class="line">      <span class="n">curr</span>
-</span><span class="line">    <span class="k">else</span>
-</span><span class="line">      <span class="n">sqrtHelper</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">allowedError</span><span class="o">,</span> <span class="k">if</span> <span class="o">(</span><span class="n">err</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="n">curr</span> <span class="o">+</span> <span class="n">stepSize</span> <span class="k">else</span> <span class="n">curr</span> <span class="o">-</span> <span class="n">stepSize</span><span class="o">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">stepSize</span><span class="o">)</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Have any questions / remarks? leave them at the commonts below!</p>
+  <div class="entry-content"><p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> 
+(in other words, find <script type="math/tex">y</script> such that <script type="math/tex">% <![CDATA[
+ \lvert \sqrt{x} - y \rvert < \epsilon %]]></script>). Obviously, you’re not allowed to use the standard <code>sqrt</code> function. 
 </div>
   
   
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/28/keypad/">Keypad</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-11-28T12:43:56+02:00" pubdate data-updated="true"></time>
-        
-           | <a href="/blog/2014/11/28/keypad/#disqus_thread"
-             data-disqus-identifier="http://interviewbits.herokuapp.com/blog/2014/11/28/keypad/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Question</strong>: Given the English alphabet, ‘a’ through ‘z’ (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 columns:</p>
-
-<pre><code>a b c d e
-f g h i j
-k l m n o
-p q r s t
-u v w x y
-z
-</code></pre>
-
-<p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).</p>
-
-<hr />
-
-<p><strong>Solution</strong>: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
-and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert “hello” to [(‘h’, ‘e’), (‘e’, ‘l’), (‘l’, ‘l’), (‘l’, ‘o’)]). 
-Two more required changes are to prepend ‘a’ to the word (to start movemonts from the top left corner of the keypad) and insert ‘!’ whenever we reached a character of the word.</p>
-
-<p>The following is a Scala solution:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Keypad</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">val</span> <span class="n">rowLength</span> <span class="k">=</span> <span class="mi">5</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">movements</span><span class="o">(</span><span class="n">from</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">),</span> <span class="n">to</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">))</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">from</span> <span class="o">==</span> <span class="n">to</span><span class="o">)</span> <span class="nc">Nil</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">val</span> <span class="n">xDiff</span> <span class="k">=</span> <span class="n">to</span><span class="o">.</span><span class="n">_1</span> <span class="o">-</span> <span class="n">from</span><span class="o">.</span><span class="n">_1</span>
-</span><span class="line">    <span class="k">val</span> <span class="n">yDiff</span> <span class="k">=</span> <span class="n">to</span><span class="o">.</span><span class="n">_2</span> <span class="o">-</span> <span class="n">from</span><span class="o">.</span><span class="n">_2</span>
-</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">xDiff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
-</span><span class="line">      <span class="s">&quot;l&quot;</span> <span class="o">::</span> <span class="n">movements</span><span class="o">(</span><span class="n">left</span><span class="o">(</span><span class="n">from</span><span class="o">),</span> <span class="n">to</span><span class="o">)</span>
-</span><span class="line">    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">yDiff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
-</span><span class="line">      <span class="s">&quot;d&quot;</span> <span class="o">::</span> <span class="n">movements</span><span class="o">(</span><span class="n">down</span><span class="o">(</span><span class="n">from</span><span class="o">),</span> <span class="n">to</span><span class="o">)</span>
-</span><span class="line">    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">yDiff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
-</span><span class="line">      <span class="s">&quot;u&quot;</span> <span class="o">::</span> <span class="n">movements</span><span class="o">(</span><span class="n">up</span><span class="o">(</span><span class="n">from</span><span class="o">),</span> <span class="n">to</span><span class="o">)</span>
-</span><span class="line">    <span class="k">else</span>
-</span><span class="line">      <span class="s">&quot;r&quot;</span> <span class="o">::</span> <span class="n">movements</span><span class="o">(</span><span class="n">right</span><span class="o">(</span><span class="n">from</span><span class="o">),</span> <span class="n">to</span><span class="o">)</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">movements</span><span class="o">(</span><span class="n">from</span><span class="k">:</span> <span class="kt">Char</span><span class="o">,</span> <span class="n">to</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="n">movements</span><span class="o">(</span><span class="n">coords</span><span class="o">(</span><span class="n">from</span><span class="o">),</span> <span class="n">coords</span><span class="o">(</span><span class="n">to</span><span class="o">))</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">movements</span><span class="o">(</span><span class="n">pairs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[(</span><span class="kt">Char</span>, <span class="kt">Char</span><span class="o">)])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">pairs</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="nc">Nil</span> <span class="k">else</span>
-</span><span class="line">    <span class="n">movements</span><span class="o">(</span><span class="n">pairs</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">pairs</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span> <span class="o">:::</span> <span class="nc">List</span><span class="o">(</span><span class="s">&quot;!&quot;</span><span class="o">)</span> <span class="o">:::</span> <span class="n">movements</span><span class="o">(</span><span class="n">pairs</span><span class="o">.</span><span class="n">tail</span><span class="o">)</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">movements</span><span class="o">(</span><span class="n">word</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">val</span> <span class="n">chars</span> <span class="k">=</span> <span class="-Symbol">&#39;a</span><span class="err">&#39;</span> <span class="o">::</span> <span class="n">word</span><span class="o">.</span><span class="n">toList</span>
-</span><span class="line">    <span class="k">val</span> <span class="n">pairs</span> <span class="k">=</span> <span class="n">chars</span> <span class="n">zip</span> <span class="n">chars</span><span class="o">.</span><span class="n">tail</span>
-</span><span class="line">    <span class="n">movements</span><span class="o">(</span><span class="n">pairs</span><span class="o">)</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">coords</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">val</span> <span class="n">i</span> <span class="k">=</span> <span class="n">c</span> <span class="o">-</span> <span class="-Symbol">&#39;a</span><span class="err">&#39;</span>
-</span><span class="line">    <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">rowLength</span><span class="o">,</span> <span class="n">i</span> <span class="o">/</span> <span class="n">rowLength</span><span class="o">)</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">down</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">))</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="n">_2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line">  <span class="k">def</span> <span class="n">up</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">))</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="n">_2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line">  <span class="k">def</span> <span class="n">right</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">))</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="n">_1</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span>
-</span><span class="line">  <span class="k">def</span> <span class="n">left</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">))</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="n">_1</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Have any questions / remarks? leave them at the commonts below!</p>
-</div>
-  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/29/square-root/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -1214,15 +683,15 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -1239,7 +708,7 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

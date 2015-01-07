@@ -24,7 +24,7 @@ MathJax.Hub.Config({
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Please write a program which will log an increasing integer, once every second. Solution:
+  <meta name="description" content="Question: Please write a program which will log the sequence 1, 2, 3… , one number every second. — Solution:
 The following is a simple Javascript &hellip;">
   
 
@@ -116,9 +116,9 @@ The following is a simple Javascript &hellip;">
   </header>
 
 
-<div class="entry-content"><p><strong>Question</strong>: Please write a program which will log an increasing integer, once every second.</p>
-
-<hr />
+<div class="entry-content"><p><strong>Question</strong>: Please write a program which will log the sequence 1, 2, 3… , one number every second.
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>:
 The following is a simple Javascript implementation:</p>
@@ -132,18 +132,22 @@ The following is a simple Javascript implementation:</p>
 <span class="line-number">7</span>
 <span class="line-number">8</span>
 <span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class="Javascript"><span class="line"><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class="line"><span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
-</span><span class="line"><span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class="line">  <span class="o">++</span><span class="nx">i</span><span class="p">;</span>
-</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
-</span><span class="line">  <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">logger</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
-</span><span class="line"><span class="p">}</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="Javascript"><span class="line"><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="kd">var</span> <span class="nx">delay</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+</span><span class="line">    <span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">      <span class="o">++</span><span class="nx">i</span><span class="p">;</span>
+</span><span class="line">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+</span><span class="line">      <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">logger</span><span class="p">,</span> <span class="nx">delay</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
 </span><span class="line">
-</span><span class="line"><span class="nx">logger</span><span class="p">();</span>
+</span><span class="line">    <span class="nx">logger</span><span class="p">();</span>
+</span><span class="line"><span class="p">})();</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><strong>Follow-up Question</strong>: Can we be centain that the delay between two consecutive loggings will be exactly 1 second? If not, how would you improve it?</p>
+<p><strong>Follow-up Question</strong>: Can we be centain that the delay between two logging of two consecutive integerss will be exactly 1 second? If not, how would you improve it?</p>
 
 <p><strong>Solution</strong>: An important concept to remember is that with Javascript timers, delay is not guaranteed. The browser operates in a single thread manner, processing
 events that accumulate in an events queue and handles them sequentially. This means that there may be a slight delay between the moment that the event was fired and
@@ -248,15 +252,15 @@ the moment that the browser started to process it.</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -274,7 +278,7 @@ the moment that the browser started to process it.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

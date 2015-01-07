@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-21T23:55:35+02:00</updated>
+  <updated>2015-01-07T10:37:55+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -15,11 +15,14 @@
   
   <entry>
     <title type="html"><![CDATA[Car Race]]></title>
-    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce/"/>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/car_race/"/>
     <updated>2014-12-03T21:55:07+02:00</updated>
-    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/horse_roce</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: In this question we model a car race. The race is initialized with a length and an array of speeds for each car. When a car wins, you should
-print an appropriate message to the console. During the race, the client can call update(car_id, speed).</p>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/03/car_race</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Imagine a car race, where a bunch of cars are about to drive for a certain distance on a linear track. 
+Given the track length and the initial speed of every car, you should print a message when some car wins the race.
+As cars speed is not constant, you should expose function <code>update(car_id, speed)</code> which is used to update the current speed of certain car.
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>:</p>
 
@@ -74,14 +77,15 @@ var getMillis = function() {
     <link href="http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second/"/>
     <updated>2014-12-02T21:54:15+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: Please write a program which will log an increasing integer, once every second.</p>
-
-<hr />
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Please write a program which will log the sequence 1, 2, 3… , one number every second.
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>:
 The following is a simple Javascript implementation:</p>
 
 <p>&#8220;` Javascript
+(function() {
     var i = 0;
     var delay = 1000;
     var logger = function() {
@@ -90,10 +94,10 @@ The following is a simple Javascript implementation:</p>
       setTimeout(logger, delay);
     }</p>
 
-<pre><code>logger(); ```
+<pre><code>logger(); })(); ```
 </code></pre>
 
-<p><strong>Follow-up Question</strong>: Can we be centain that the delay between two consecutive loggings will be exactly 1 second? If not, how would you improve it?</p>
+<p><strong>Follow-up Question</strong>: Can we be centain that the delay between two logging of two consecutive integerss will be exactly 1 second? If not, how would you improve it?</p>
 
 <p><strong>Solution</strong>: An important concept to remember is that with Javascript timers, delay is not guaranteed. The browser operates in a single thread manner, processing
 events that accumulate in an events queue and handles them sequentially. This means that there may be a slight delay between the moment that the event was fired and

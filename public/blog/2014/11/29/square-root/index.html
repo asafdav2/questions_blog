@@ -20,11 +20,11 @@ MathJax.Hub.Config({
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Square Root - Interview Bits</title>
+  <title>Square Root (Solution) - Interview Bits</title>
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Givan two real numbers and , find the square root of within error margin of (that is, find such that ). Obviously, you’re not allowed to &hellip;">
+  <meta name="description" content="Question: Givan two real numbers and , find the square root of within error margin of (in other words, find such that ). Obviously, you’re not &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,7 +89,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">Square Root</h1>
+      <h1 class="entry-title">Square Root (Solution)</h1>
     
     
       <p class="meta">
@@ -115,13 +115,15 @@ MathJax.Hub.Config({
   </header>
 
 
-<div class="entry-content"><p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> (that is, find <script type="math/tex">y</script> such that <script type="math/tex">% <![CDATA[
- \lvert \sqrt{x} - y \rvert < \epsilon %]]></script>). Obviously, you’re not allowed to use the startand <code>sqrt</code> function. </p>
-
-<hr />
+<div class="entry-content"><p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> 
+(in other words, find <script type="math/tex">y</script> such that <script type="math/tex">% <![CDATA[
+ \lvert \sqrt{x} - y \rvert < \epsilon %]]></script>). Obviously, you’re not allowed to use the standard <code>sqrt</code> function. 
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>: The general idea is to guess a solution <script type="math/tex">y</script> and then iteratively improve it. If <script type="math/tex">y^2 > x</script>, we should aim lower, so in the next step we’ll try <script type="math/tex">y - stepSize</script>. 
-else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. In each step we’ll halve the <script type="math/tex">stepSize</script>.</p>
+else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. As we approach our target we should refine our search, so we’ll divide <script type="math/tex">stepSize</script> by 2.
+We can start from any number, we’ll select arbitrarily <script type="math/tex">\frac{x}{2}</script>.</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -247,15 +249,15 @@ else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize<
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -273,7 +275,7 @@ else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize<
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

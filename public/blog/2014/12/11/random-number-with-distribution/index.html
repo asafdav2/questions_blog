@@ -20,12 +20,12 @@ MathJax.Hub.Config({
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Plus Minus Array - Interview Bits</title>
+  <title>Random Number With Distribution - Interview Bits</title>
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: We are givan an array (with size ) where every cell holds either ‘+’ or ‘-‘.
-We’re told that = ‘+’ and that = ‘-‘. Describe an algorithm to &hellip;">
+  <meta name="description" content="Question: Implement a function that takes a list of doubles (where ) and returns with probability .
+For example, given the list , the function should &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -34,7 +34,7 @@ We’re told that = ‘+’ and that = ‘-‘. Describe an algorithm to &hellip
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array">
+  <link rel="canonical" href="http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Interview Bits" type="application/atom+xml">
@@ -90,7 +90,7 @@ We’re told that = ‘+’ and that = ‘-‘. Describe an algorithm to &hellip
   
   <header>
     
-      <h1 class="entry-title">Plus Minus Array</h1>
+      <h1 class="entry-title">Random Number With Distribution</h1>
     
     
       <p class="meta">
@@ -106,7 +106,7 @@ We’re told that = ‘+’ and that = ‘-‘. Describe an algorithm to &hellip
   
 
 
-<time datetime="2014-12-01T23:17:39+02:00" pubdate data-updated="true"></time>
+<time datetime="2014-12-11T21:12:24+02:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://interviewbits.herokuapp.com">Comments</a>
@@ -116,54 +116,22 @@ We’re told that = ‘+’ and that = ‘-‘. Describe an algorithm to &hellip
   </header>
 
 
-<div class="entry-content"><p><strong>Question</strong>: We are givan an array <script type="math/tex">A</script> (with size <script type="math/tex">n</script>) where every cell holds either ‘+’ or ‘-‘.
-We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find an index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
-and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
-
-<p><strong>Example</strong>: </p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>A</td>
-      <td>+</td>
-      <td>+</td>
-      <td>-</td>
-      <td>+</td>
-      <td>+</td>
-      <td>+</td>
-      <td>-</td>
-      <td>-</td>
-      <td>+</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>id</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
-      <td>7</td>
-      <td>8</td>
-      <td>9</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
+<div class="entry-content"><p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
+For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
 <!--more-->
 —</p>
 
-<p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
-variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step
-we’ll check if <script type="math/tex">r=l+1</script>. If so, we’re done. else, we find the center point <script type="math/tex">c=\frac{l+r}{2}</script>. If <script type="math/tex">A[c</script>] = ‘+’ we’ll
-update <script type="math/tex">l=c</script>, else <script type="math/tex">r=c</script>. Since in each step the distance between <script type="math/tex">l</script> and <script type="math/tex">r</script> diminishes, we know the process
-will eventually terminate.</p>
+<p><strong>Solution</strong>:
+We’ll start by building the running sums list of the input list, <script type="math/tex">D'</script>. Then, we’d generate a random number <script type="math/tex">r \in [0, 1]</script> and find where it 
+“falls” in the running sums list; We’ll return the index <script type="math/tex">j</script> that satisfies <script type="math/tex">% <![CDATA[
+D'_j \geq r \wedge D'_{j+1} < r %]]></script>.
+For example, the running sums list for the previous example is <script type="math/tex">D'=[0.0, 0.3, 0.7, 0.9, 1.0]</script>. Assuming we generated <script type="math/tex"> r = 0.67</script>, it falls between indices 1 and 2, 
+so we’d return 1.
+Since the running sums list is ordered by nature, we can use binary search to find the desired index.</p>
 
-<p>The following is a Scala implementation:</p>
+<p>The time complexity of the solution is <script type="math/tex">O(n)</script> to build the running sums list and <script type="math/tex">O(\log{}n)</script> for the search part. If we’re told that we’d generate many random numbers
+for a given distributions list, we could optimize things by building the running sums list once and reusing it, as seen in the following Scala implementation. After building the
+running sums list, it returns a function which reuses it.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -181,23 +149,24 @@ will eventually terminate.</p>
 <span class="line-number">14</span>
 <span class="line-number">15</span>
 <span class="line-number">16</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">PlusMinusArray</span> <span class="o">{</span>
-</span><span class="line"><span class="k">def</span> <span class="n">search</span><span class="o">(</span><span class="n">array</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Char</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">  <span class="k">def</span> <span class="n">searchInner</span><span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">h</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">h</span> <span class="o">==</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="n">l</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class="line">      <span class="k">val</span> <span class="n">mid</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">l</span> <span class="o">+</span> <span class="o">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">l</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span>
-</span><span class="line">      <span class="n">array</span><span class="o">(</span><span class="n">mid</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
-</span><span class="line">        <span class="k">case</span> <span class="sc">&#39;+&#39;</span> <span class="k">=&gt;</span> <span class="n">searchInner</span><span class="o">(</span><span class="n">mid</span><span class="o">,</span> <span class="n">h</span><span class="o">)</span>
-</span><span class="line">        <span class="k">case</span> <span class="sc">&#39;-&#39;</span> <span class="k">=&gt;</span> <span class="n">searchInner</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">mid</span><span class="o">)</span>
-</span><span class="line">        <span class="k">case</span> <span class="k">_</span>   <span class="k">=&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;invalid character &quot;</span> <span class="o">+</span> <span class="n">array</span><span class="o">(</span><span class="n">mid</span><span class="o">))</span>
-</span><span class="line">      <span class="o">}</span>
+</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">import</span> <span class="nn">scala.collection.Searching._</span>
+</span><span class="line">
+</span><span class="line"><span class="k">class</span> <span class="nc">Distribution</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">def</span> <span class="n">precomputeFor</span><span class="o">(</span><span class="n">distribution</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span><span class="k">:</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">val</span> <span class="n">sums</span> <span class="k">=</span> <span class="n">runningSums</span><span class="o">(</span><span class="n">distribution</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">)</span>
+</span><span class="line">    <span class="o">()</span> <span class="k">=&gt;</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">sums</span><span class="o">.</span><span class="n">search</span><span class="o">(</span><span class="n">util</span><span class="o">.</span><span class="nc">Random</span><span class="o">.</span><span class="n">nextDouble</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class="line">          <span class="k">case</span> <span class="nc">Found</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">p</span>
+</span><span class="line">          <span class="k">case</span> <span class="nc">InsertionPoint</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span class="line">        <span class="o">}</span>
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line">  <span class="o">}</span>
 </span><span class="line">
-</span><span class="line">  <span class="n">searchInner</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line"><span class="o">}</span>
+</span><span class="line">  <span class="k">def</span> <span class="n">runningSums</span><span class="o">(</span><span class="n">dist</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Double</span><span class="o">],</span> <span class="n">sum</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span>
+</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">dist</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="nc">Nil</span> <span class="k">else</span> <span class="n">sum</span> <span class="o">::</span> <span class="n">runningSums</span><span class="o">(</span><span class="n">dist</span><span class="o">.</span><span class="n">tail</span><span class="o">,</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">dist</span><span class="o">.</span><span class="n">head</span><span class="o">)</span>
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
 <p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
 
@@ -221,7 +190,7 @@ will eventually terminate.</p>
   
 
 
-<time datetime="2014-12-01T23:17:39+02:00" pubdate data-updated="true"></time>
+<time datetime="2014-12-11T21:12:24+02:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
@@ -235,7 +204,7 @@ will eventually terminate.</p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/" data-via="" data-counturl="http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution/" data-via="" data-counturl="http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution/" >Tweet</a>
   
   
   
@@ -246,10 +215,10 @@ will eventually terminate.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/11/29/insert/" title="Previous Post: Insert, remove, contains and random in O(1)">&laquo; Insert, remove, contains and random in O(1)</a>
+        <a class="basic-alignment left" href="/blog/2014/12/03/car_race/" title="Previous Post: Car Race">&laquo; Car Race</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/12/02/log-every-second/" title="Next Post: log every second">log every second &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/12/15/celebrities/" title="Next Post: Celebrities">Celebrities &raquo;</a>
       
     </p>
   </footer>
@@ -334,8 +303,8 @@ will eventually terminate.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/';
-        var disqus_url = 'http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array/';
+        var disqus_identifier = 'http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution/';
+        var disqus_url = 'http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution/';
         var disqus_script = 'embed.js';
       
     (function () {

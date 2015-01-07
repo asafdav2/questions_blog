@@ -125,9 +125,9 @@ u v w x y
 z
 </code></pre>
 
-<p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).</p>
-
-<hr />
+<p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
 and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert “hello” to [(‘h’, ‘e’), (‘e’, ‘l’), (‘l’, ‘l’), (‘l’, ‘o’)]). 
@@ -264,7 +264,7 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
         <a class="basic-alignment left" href="/blog/2014/11/28/deadly-island/" title="Previous Post: Deadly Island">&laquo; Deadly Island</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/11/29/square-root/" title="Next Post: Square Root">Square Root &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/11/29/square-root/" title="Next Post: Square Root (Solution)">Square Root (Solution) &raquo;</a>
       
     </p>
   </footer>
@@ -311,15 +311,15 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -337,7 +337,7 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

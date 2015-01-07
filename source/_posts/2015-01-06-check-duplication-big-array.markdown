@@ -3,11 +3,14 @@ layout: post
 title: "Check for duplicated value in array"
 date: 2015-01-06 07:51:24 +0200
 comments: true
+published: false
 categories: 
 ---
 
-**Question**: Given an N-sized array A where all values are in the range [0, M], and given M >> N,
+**Question**: Given an N-sized array A where all values are in the range [0, M] (M >> N),
 implement a time-efficient algorithm to check if A contains a duplicated value.
+<!--more-->
+---
 
 **Solution**: Notice that the questions specifically asks to optimize running time, event at the cost of storage.
 We'll allocate a new array B with size M, but instead of zeroing all elements (which will take O(M) time), we'll traverse A and zero

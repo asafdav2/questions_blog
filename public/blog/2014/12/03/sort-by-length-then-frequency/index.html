@@ -24,7 +24,7 @@ MathJax.Hub.Config({
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Implement a function that takes a file name of text file that contains words (each in a different line, words may apper more than once), &hellip;">
+  <meta name="description" content="Question: Implement a function that takes an unordered list of words (assume words may apper more than once), and returns a list of distinct words ( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -115,33 +115,18 @@ MathJax.Hub.Config({
   </header>
 
 
-<div class="entry-content"><p><strong>Question</strong>: Implement a function that takes a file name of text file that contains words (each in a different line, 
-words may apper more than once), and returns the list of words (without duplications), sorted first by word 
-length (descending) and then by number of occurrences (descending).</p>
+<div class="entry-content"><p><strong>Question</strong>: Implement a function that takes an unordered list of words (assume words may apper more than once), 
+and returns a list of distinct words (that is, without duplications), sorted first by word 
+length (descending) and then by the number of occurrences in the input list (descending as well).</p>
 
-<p>In other words, the longest word will appear first in the list. In case there are several words with the same
-length, their inner order will be according to their appearences frequency.</p>
+<p><strong>Example</strong>: </p>
 
-<p><strong>Example</strong>: assume the file <code>words.txt</code> contain the following content:</p>
-
-<pre><code>ABC
-ABC
-ABB
-ABCDE
-A
-B
-B
-B
+<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ] &lt;!--more--&gt; ---
 </code></pre>
 
-<p>Then running <code>sort("words.txt")</code> should return the following result:</p>
-
-<pre><code>ABCDE ABC ABB B A
-</code></pre>
-
-<hr />
-
-<p><strong>Solution</strong>:</p>
+<p><strong>Solution</strong>: Our solution is functional by nature. There are two functions: <code>occurrences</code>, which takes a list of words and return a list of (word, occurrences)
+pairs, and <code>sort</code>, which takes the result of <code>occurrences</code>, sort the pairs according to the required order (first by length, then by occurrences) and strips
+the occurrences amount from each pair, so the result will only contain the words.</p>
 
 <p>The following is a Scala implementation:</p>
 
@@ -158,11 +143,7 @@ B
 <span class="line-number">11</span>
 <span class="line-number">12</span>
 <span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
 </pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Sorter</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">sort</span><span class="o">(</span><span class="n">filename</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="n">sort</span><span class="o">(</span><span class="n">scala</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="n">filename</span><span class="o">).</span><span class="n">getLines</span><span class="o">().</span><span class="n">toList</span><span class="o">)</span>
 </span><span class="line">
 </span><span class="line">  <span class="k">def</span> <span class="n">sort</span><span class="o">(</span><span class="n">words</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span>
 </span><span class="line">    <span class="n">occurrences</span><span class="o">(</span><span class="n">words</span><span class="o">).</span><span class="n">toList</span>
@@ -176,6 +157,8 @@ B
 </span><span class="line">
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
 
 
@@ -226,7 +209,7 @@ B
         <a class="basic-alignment left" href="/blog/2014/12/03/power-set/" title="Previous Post: Power Set">&laquo; Power Set</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/12/03/horse_roce/" title="Next Post: Car Race">Car Race &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/12/03/car_race/" title="Next Post: Car Race">Car Race &raquo;</a>
       
     </p>
   </footer>
@@ -273,15 +256,15 @@ B
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -299,7 +282,7 @@ B
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

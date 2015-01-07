@@ -7,7 +7,7 @@ categories: [Javascript]
 ---
 
 **Question**: Please write a program which will log the sequence 1, 2, 3... , one number every second.
-
+<!--more-->
 ---
 
 **Solution**:

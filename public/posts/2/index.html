@@ -24,7 +24,7 @@ MathJax.Hub.Config({
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Imagine an island made of tiled board, with a man standing in some initial position . In each turn, the man steps either up, down, left or &hellip;">
+  <meta name="description" content="Question: Given the English alphabet, ‘a’ through ‘z’ (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +92,59 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/11/28/keypad/">Keypad</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-28T12:43:56+02:00" pubdate data-updated="true"></time>
+        
+           | <a href="/blog/2014/11/28/keypad/#disqus_thread"
+             data-disqus-identifier="http://interviewbits.herokuapp.com/blog/2014/11/28/keypad/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Question</strong>: Given the English alphabet, ‘a’ through ‘z’ (lowercase), and an imaginary onscreen keyboard with the letters laid out in 6 rows and 5 columns:</p>
+
+<pre><code>a b c d e
+f g h i j
+k l m n o
+p q r s t
+u v w x y
+z
+</code></pre>
+
+<p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/28/keypad/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/11/28/deadly-island/">Deadly Island</a></h1>
     
     
@@ -119,85 +172,13 @@ MathJax.Hub.Config({
 
 
   <div class="entry-content"><p><strong>Question</strong>: Imagine an island made of <script type="math/tex">N \times M</script> tiled board, with a man standing in some initial position <script type="math/tex">(x,y)</script>. In each turn, the man steps either up, down, left or right (each
-with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.</p>
-
-<hr />
-
-<p><strong>Solution</strong>: We’ll mark the probabily that the man, located at <script type="math/tex">(x,y)</script> will live for <script type="math/tex">n</script> steps with <script type="math/tex">p(x,y,n)</script>. Using the <a href="http://en.wikipedia.org/wiki/Law_of_total_probability">Law of total probability</a>,
-we can derive the following equation: </p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-
-\begin{split}
-&p(x,y,n) = \\ &\frac{p(x-1,y,n-1) + p(x+1,y,n-1) + p(x,y-1,n-1) + p(x,y+1,n-1)}{4}
-\end{split}
- %]]></script>
-
-<p>Of course, if the man steps outside of the island boundaries, the probability is 0.</p>
-
-<p>This is easy enough to program, but to make it run at reasonable speed, we’ll memoize the probabilities calculated before for certain values of <script type="math/tex">x,y</script> and <script type="math/tex">n</script> (a common idiom 
-in <a href="http://en.wikipedia.org/wiki/Dynamic_programming">Dynamic Programming</a>.
-The following is a Scala implementation:</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">DeadlyIsland</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">m</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">val</span> <span class="nc">MaxSteps</span> <span class="k">=</span> <span class="mi">100</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">val</span> <span class="n">memoization</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">.</span><span class="n">ofDim</span><span class="o">[</span><span class="kt">Double</span><span class="o">](</span><span class="n">n</span><span class="o">,</span> <span class="n">m</span><span class="o">,</span> <span class="nc">MaxSteps</span><span class="o">)</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">def</span> <span class="n">calculate</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">steps</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">)</span>
-</span><span class="line">      <span class="mf">0.0</span>
-</span><span class="line">    <span class="k">else</span>
-</span><span class="line">      <span class="k">if</span> <span class="o">(</span><span class="n">steps</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
-</span><span class="line">        <span class="mi">1</span>
-</span><span class="line">      <span class="k">else</span>
-</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">memoization</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)(</span><span class="n">steps</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="o">)</span>
-</span><span class="line">            <span class="n">memoization</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)(</span><span class="n">steps</span><span class="o">)</span>
-</span><span class="line">        <span class="k">else</span> <span class="o">{</span>
-</span><span class="line">            <span class="k">val</span> <span class="n">prob</span> <span class="k">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="o">(</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span>
-</span><span class="line">                <span class="n">calculate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">steps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</span><span class="line">            <span class="o">)</span>
-</span><span class="line">            <span class="n">memoization</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)(</span><span class="n">steps</span><span class="o">)</span> <span class="k">=</span> <span class="n">prob</span>
-</span><span class="line">            <span class="n">prob</span>
-</span><span class="line">        <span class="o">}</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>Have any questions / remarks? leave them at the commonts below!</p>
-
+with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/28/deadly-island/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -234,15 +215,15 @@ The following is a Scala implementation:</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -259,7 +240,7 @@ The following is a Scala implementation:</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

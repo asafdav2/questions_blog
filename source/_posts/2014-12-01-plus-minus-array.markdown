@@ -16,7 +16,7 @@ and $$A[j+1]$$ = '-'.
 |id|0|1|2|3|4|5|6|7|8|9|
 
 Correct answers for this example are $$j=1$$, $$j=5$$ or $$j=8$$ (each one is acceptable, no need to return them all).
-
+<!--more-->
 ---
 
 **Solution**: We can use logic similar to binary search to solve this in $$O(\log{} n)$$ time complexity. We'll use two 

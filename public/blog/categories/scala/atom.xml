@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-21T23:55:35+02:00</updated>
+  <updated>2015-01-07T10:37:55+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -31,9 +31,9 @@ C knows A
 D knows B
 </code></pre>
 
-<p>Then the result should be <script type="math/tex">B</script>.</p>
-
-<hr />
+<p>Then the result should be <script type="math/tex">B</script>.
+<!--more--> 
+—</p>
 
 <p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
 in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>
@@ -66,46 +66,74 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[Random Number With Distribution]]></title>
+    <link href="http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution/"/>
+    <updated>2014-12-11T21:12:24+02:00</updated>
+    <id>http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
+For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
+<!--more-->
+—</p>
+
+<p><strong>Solution</strong>:
+We’ll start by building the running sums list of the input list, <script type="math/tex">D'</script>. Then, we’d generate a random number <script type="math/tex">r \in [0, 1]</script> and find where it 
+“falls” in the running sums list; We’ll return the index <script type="math/tex">j</script> that satisfies <script type="math/tex">% &lt;![CDATA[
+D'_j \geq r \wedge D'_{j+1} < r %]]&gt;</script>.
+For example, the running sums list for the previous example is <script type="math/tex">D'=[0.0, 0.3, 0.7, 0.9, 1.0]</script>. Assuming we generated <script type="math/tex"> r = 0.67</script>, it falls between indices 1 and 2, 
+so we’d return 1.
+Since the running sums list is ordered by nature, we can use binary search to find the desired index.</p>
+
+<p>The time complexity of the solution is <script type="math/tex">O(n)</script> to build the running sums list and <script type="math/tex">O(\log{}n)</script> for the search part. If we’re told that we’d generate many random numbers
+for a given distributions list, we could optimize things by building the running sums list once and reusing it, as seen in the following Scala implementation. After building the
+running sums list, it returns a function which reuses it.</p>
+
+<p>&#8220;` Scala
+    import scala.collection.Searching._</p>
+
+<pre><code>class Distribution {
+  def precomputeFor(distribution: List[Double]): () =&gt; Int = {
+    val sums = runningSums(distribution, 0.0)
+    () =&gt; { 
+        sums.search(util.Random.nextDouble) match {
+          case Found(p) =&gt; p
+          case InsertionPoint(p) =&gt; p + 1
+        }
+    }
+  }
+
+  def runningSums(dist: List[Double], sum: Double): List[Double] = 
+    if (dist.isEmpty) Nil else sum :: runningSums(dist.tail, sum + dist.head)
+} ```
+</code></pre>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Sort Words by Length and Frequency]]></title>
     <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/sort-by-length-then-frequency/"/>
     <updated>2014-12-03T19:32:20+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/sort-by-length-then-frequency</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes a file name of text file that contains words (each in a different line, 
-words may apper more than once), and returns the list of words (without duplications), sorted first by word 
-length (descending) and then by number of occurrences (descending).</p>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes an unordered list of words (assume words may apper more than once), 
+and returns a list of distinct words (that is, without duplications), sorted first by word 
+length (descending) and then by the number of occurrences in the input list (descending as well).</p>
 
-<p>In other words, the longest word will appear first in the list. In case there are several words with the same
-length, their inner order will be according to their appearences frequency.</p>
+<p><strong>Example</strong>: </p>
 
-<p><strong>Example</strong>: assume the file <code>words.txt</code> contain the following content:</p>
-
-<pre><code>ABC
-ABC
-ABB
-ABCDE
-A
-B
-B
-B
+<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ] &lt;!--more--&gt; ---
 </code></pre>
 
-<p>Then running <code>sort("words.txt")</code> should return the following result:</p>
-
-<pre><code>ABCDE ABC ABB B A
-</code></pre>
-
-<hr />
-
-<p><strong>Solution</strong>:</p>
+<p><strong>Solution</strong>: Our solution is functional by nature. There are two functions: <code>occurrences</code>, which takes a list of words and return a list of (word, occurrences)
+pairs, and <code>sort</code>, which takes the result of <code>occurrences</code>, sort the pairs according to the required order (first by length, then by occurrences) and strips
+the occurrences amount from each pair, so the result will only contain the words.</p>
 
 <p>The following is a Scala implementation:</p>
 
 <p>&#8220;` Scala
     class Sorter {</p>
 
-<pre><code>  def sort(filename: String): List[String] = sort(scala.io.Source.fromFile(filename).getLines().toList)
-
-  def sort(words: List[String]): List[String] = 
+<pre><code>  def sort(words: List[String]): List[String] = 
     occurrences(words).toList
       .sortBy(r =&gt; (-r._1.length, -r._2))
       .map(r =&gt; r._1)
@@ -117,6 +145,8 @@ B
 
 } ```
 </code></pre>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 ]]></content>
   </entry>
   
@@ -125,9 +155,9 @@ B
     <link href="http://interviewbits.herokuapp.com/blog/2014/12/03/power-set/"/>
     <updated>2014-12-03T19:32:20+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.</p>
-
-<hr />
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
 the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
@@ -140,6 +170,8 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
       rec ::: rec.map(s =&gt; s + n)
     }
 </code></p>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 ]]></content>
   </entry>
   
@@ -149,7 +181,7 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
     <updated>2014-12-01T23:17:39+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/01/plus-minus-array</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: We are givan an array <script type="math/tex">A</script> (with size <script type="math/tex">n</script>) where every cell holds either ‘+’ or ‘-‘.
-We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
+We’re told that <script type="math/tex">A[0]</script> = ‘+’ and that <script type="math/tex">A[n-1]</script> = ‘-‘. Describe an algorithm to find an index <script type="math/tex">j</script> such that <script type="math/tex">A[j]</script> = ‘+’
 and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
 
 <p><strong>Example</strong>: </p>
@@ -185,15 +217,17 @@ and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
   </tbody>
 </table>
 
-<p>Correct answers in this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script>, <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).</p>
-
-<hr />
+<p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
 variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step
 we’ll check if <script type="math/tex">r=l+1</script>. If so, we’re done. else, we find the center point <script type="math/tex">c=\frac{l+r}{2}</script>. If <script type="math/tex">A[c</script>] = ‘+’ we’ll
 update <script type="math/tex">l=c</script>, else <script type="math/tex">r=c</script>. Since in each step the distance between <script type="math/tex">l</script> and <script type="math/tex">r</script> diminishes, we know the process
 will eventually terminate.</p>
+
+<p>The following is a Scala implementation:</p>
 
 <p>&#8220;` Scala
     class PlusMinusArray {
@@ -213,39 +247,6 @@ will eventually terminate.</p>
 }
 } ``` Have any questions / remarks? leave them at the commonts below!
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Square Root]]></title>
-    <link href="http://interviewbits.herokuapp.com/blog/2014/11/29/square-root/"/>
-    <updated>2014-11-29T18:20:21+02:00</updated>
-    <id>http://interviewbits.herokuapp.com/blog/2014/11/29/square-root</id>
-    <content type="html"><![CDATA[<p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> (that is, find <script type="math/tex">y</script> such that <script type="math/tex">% &lt;![CDATA[
- \lvert \sqrt{x} - y \rvert < \epsilon %]]&gt;</script>). Obviously, you’re not allowed to use the startand <code>sqrt</code> function. </p>
-
-<hr />
-
-<p><strong>Solution</strong>: The general idea is to guess a solution <script type="math/tex">y</script> and then iteratively improve it. If <script type="math/tex">y^2 > x</script>, we should aim lower, so in the next step we’ll try <script type="math/tex">y - stepSize</script>. 
-else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. In each step we’ll halve the <script type="math/tex">stepSize</script>.</p>
-
-<p>The following is a Scala implementation:</p>
-
-<p>&#8220;` Scala
-    class Sqrt {
-      def sqrt(x : Double, err: Double): Double = sqrtHelper(x, err, 0.5 * x, 0.25 * x)</p>
-
-<pre><code>  def sqrtHelper(x: Double, allowedError: Double, curr: Double, stepSize: Double): Double = {
-    val err = x - (curr * curr)
-    if (Math.abs(err) &lt;= allowedError)
-      curr
-    else
-      sqrtHelper(x, allowedError, if (err &gt; 0) curr + stepSize else curr - stepSize, 0.5 * stepSize)
-  }
-} ```
-</code></pre>
-
-<p>Have any questions / remarks? leave them at the commonts below!</p>
 ]]></content>
   </entry>
   

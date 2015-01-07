@@ -24,7 +24,7 @@ MathJax.Hub.Config({
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Given an integer , implement a function to compute , the power set of the set . Solution: We are required to construct a set containing all &hellip;">
+  <meta name="description" content="Question: Given an integer , implement a function to compute , the power set of the set . — Solution: We are required to construct a set containing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -115,9 +115,9 @@ MathJax.Hub.Config({
   </header>
 
 
-<div class="entry-content"><p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.</p>
-
-<hr />
+<div class="entry-content"><p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
+<!--more-->
+—</p>
 
 <p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
 the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
@@ -133,6 +133,8 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
 </span><span class="line">  <span class="n">rec</span> <span class="o">:::</span> <span class="n">rec</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">s</span> <span class="k">=&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="n">n</span><span class="o">)</span>
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
 
 
@@ -230,15 +232,15 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
       </li>
     
       <li class="post">
-        <a href="/blog/2014/12/03/horse_roce/">Car Race</a>
+        <a href="/blog/2014/12/11/random-number-with-distribution/">Random Number With Distribution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/car_race/">Car Race</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/12/03/sort-by-length-then-frequency/">Sort Words by Length and Frequency</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/03/power-set/">Power Set</a>
       </li>
     
   </ul>
@@ -256,7 +258,7 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Asaf David -
+  Copyright &copy; 2015 - Asaf David -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

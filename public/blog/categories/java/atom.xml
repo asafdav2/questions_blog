@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2014-12-21T23:55:35+02:00</updated>
+  <updated>2015-01-07T10:37:55+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -45,7 +45,9 @@ You are required to store these rectangles in an efficient manner (in terms of m
 
 <ul>
   <li>a simple collection of rectangles (isn’t efficient enough performance-wise)</li>
-  <li>a map of each point to its corresponding rectangle (isn’t efficient enough memory-wise)</li>
+  <li>a map of each point to its corresponding rectangle (isn’t efficient enough memory-wise)
+<!--more-->
+—</li>
 </ul>
 
 <p><strong>Solution</strong>:</p>
