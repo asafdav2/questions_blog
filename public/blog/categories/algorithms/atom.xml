@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithms | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-07T10:37:55+02:00</updated>
+  <updated>2015-01-11T07:43:28+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -32,8 +32,9 @@ D knows B
 </code></pre>
 
 <p>Then the result should be <script type="math/tex">B</script>.
-<!--more--> 
-—</p>
+<!--more--> </p>
+
+<hr />
 
 <p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
 in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>

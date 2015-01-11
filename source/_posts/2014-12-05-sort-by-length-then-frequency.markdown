@@ -13,7 +13,9 @@ length (descending) and then by the number of occurrences in the input list (des
 **Example**: 
 
     sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ]
+
 <!--more-->
+
 ---
 
 **Solution**: Our solution is functional by nature. There are two functions: ```occurrences```, which takes a list of words and return a list of (word, occurrences)

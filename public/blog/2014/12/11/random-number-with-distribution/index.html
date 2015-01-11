@@ -118,8 +118,9 @@ For example, given the list , the function should &hellip;">
 
 <div class="entry-content"><p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
 For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:
 We’ll start by building the running sums list of the input list, <script type="math/tex">D'</script>. Then, we’d generate a random number <script type="math/tex">r \in [0, 1]</script> and find where it 

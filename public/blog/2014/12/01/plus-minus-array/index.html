@@ -154,8 +154,9 @@ and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
 </table>
 
 <p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
 variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step

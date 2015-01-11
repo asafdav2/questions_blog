@@ -20,6 +20,7 @@ Implement a function that finds the celebrities in a given list of people. This 
 
 Then the result should be $$B$$.
 <!--more--> 
+
 ---
 
 **Solution**: First, we can easily deduce that according to the definition, there can only be one celebrity

@@ -9,6 +9,7 @@ categories: [Binary Search, Scala]
 **Question**: Implement a function that takes a list of doubles $$D = [d_0, d_1, \ldots, d_n]$$ (where $$\sum_{i=0}^{n} d_i = 1.0$$) and returns $$i$$ with probability $$d_i$$.
 For example, given the list $$[0.3, 0.4, 0.2, 0.1]$$, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
 <!--more-->
+
 ---
 
 **Solution**:

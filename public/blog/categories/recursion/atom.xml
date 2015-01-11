@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Recursion | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/recursion/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-07T10:37:55+02:00</updated>
+  <updated>2015-01-11T07:43:28+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -19,8 +19,9 @@
     <updated>2014-12-03T19:32:20+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
 the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
@@ -54,8 +55,9 @@ z
 </code></pre>
 
 <p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
 and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert “hello” to [(‘h’, ‘e’), (‘e’, ‘l’), (‘l’, ‘l’), (‘l’, ‘o’)]). 

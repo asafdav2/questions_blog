@@ -17,6 +17,7 @@ categories: [Bitwise operations, C]
     }
 ```
 <!--more-->
+
 ---
 
 **Solution**:

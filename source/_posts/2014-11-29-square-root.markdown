@@ -9,6 +9,7 @@ categories: [Binary Search, Scala]
 **Question**: Givan two real numbers $$x$$ and $$\epsilon$$, find the square root of $$x$$ within error margin of $$\epsilon$$ 
 (in other words, find $$y$$ such that $$ \lvert \sqrt{x} - y \rvert < \epsilon$$). Obviously, you're not allowed to use the standard ```sqrt``` function. 
 <!--more-->
+
 ---
 
 **Solution**: The general idea is to guess a solution $$y$$ and then iteratively improve it. If $$y^2 > x$$, we should aim lower, so in the next step we'll try $$y - stepSize$$. 

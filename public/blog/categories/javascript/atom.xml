@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-07T10:37:55+02:00</updated>
+  <updated>2015-01-11T07:43:28+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -21,8 +21,9 @@
     <content type="html"><![CDATA[<p><strong>Question</strong>: Imagine a car race, where a bunch of cars are about to drive for a certain distance on a linear track. 
 Given the track length and the initial speed of every car, you should print a message when some car wins the race.
 As cars speed is not constant, you should expose function <code>update(car_id, speed)</code> which is used to update the current speed of certain car.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:</p>
 
@@ -78,8 +79,9 @@ var getMillis = function() {
     <updated>2014-12-02T21:54:15+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Please write a program which will log the sequence 1, 2, 3… , one number every second.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:
 The following is a simple Javascript implementation:</p>

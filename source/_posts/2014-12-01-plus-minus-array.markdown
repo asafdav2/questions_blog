@@ -17,6 +17,7 @@ and $$A[j+1]$$ = '-'.
 
 Correct answers for this example are $$j=1$$, $$j=5$$ or $$j=8$$ (each one is acceptable, no need to return them all).
 <!--more-->
+
 ---
 
 **Solution**: We can use logic similar to binary search to solve this in $$O(\log{} n)$$ time complexity. We'll use two 

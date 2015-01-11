@@ -118,8 +118,9 @@ MathJax.Hub.Config({
 <div class="entry-content"><p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> 
 (in other words, find <script type="math/tex">y</script> such that <script type="math/tex">% <![CDATA[
  \lvert \sqrt{x} - y \rvert < \epsilon %]]></script>). Obviously, you’re not allowed to use the standard <code>sqrt</code> function. 
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: The general idea is to guess a solution <script type="math/tex">y</script> and then iteratively improve it. If <script type="math/tex">y^2 > x</script>, we should aim lower, so in the next step we’ll try <script type="math/tex">y - stepSize</script>. 
 else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. As we approach our target we should refine our search, so we’ll divide <script type="math/tex">stepSize</script> by 2.

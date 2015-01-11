@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Binary Search | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/binary-search/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-07T10:37:55+02:00</updated>
+  <updated>2015-01-11T07:43:28+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -20,8 +20,9 @@
     <id>http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
 For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:
 We’ll start by building the running sums list of the input list, <script type="math/tex">D'</script>. Then, we’d generate a random number <script type="math/tex">r \in [0, 1]</script> and find where it 
@@ -101,8 +102,9 @@ and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
 </table>
 
 <p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
 variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step
@@ -141,8 +143,9 @@ will eventually terminate.</p>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> 
 (in other words, find <script type="math/tex">y</script> such that <script type="math/tex">% &lt;![CDATA[
  \lvert \sqrt{x} - y \rvert < \epsilon %]]&gt;</script>). Obviously, you’re not allowed to use the standard <code>sqrt</code> function. 
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: The general idea is to guess a solution <script type="math/tex">y</script> and then iteratively improve it. If <script type="math/tex">y^2 > x</script>, we should aim lower, so in the next step we’ll try <script type="math/tex">y - stepSize</script>. 
 else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. As we approach our target we should refine our search, so we’ll divide <script type="math/tex">stepSize</script> by 2.

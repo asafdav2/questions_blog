@@ -121,8 +121,12 @@ length (descending) and then by the number of occurrences in the input list (des
 
 <p><strong>Example</strong>: </p>
 
-<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ] &lt;!--more--&gt; ---
+<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ]
 </code></pre>
+
+<!--more-->
+
+<hr />
 
 <p><strong>Solution</strong>: Our solution is functional by nature. There are two functions: <code>occurrences</code>, which takes a list of words and return a list of (word, occurrences)
 pairs, and <code>sort</code>, which takes the result of <code>occurrences</code>, sort the pairs according to the required order (first by length, then by occurrences) and strips

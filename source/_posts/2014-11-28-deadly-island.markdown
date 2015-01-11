@@ -9,6 +9,7 @@ categories: [Dynamic Programming, Scala]
 **Question**: Imagine an island made of $$N \times M$$ tiled board, with a man standing in some initial position $$(x,y)$$. In each turn, the man steps either up, down, left or right (each
 with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for $$n$$ steps.
 <!--more-->
+
 ---
 
 **Solution**: We'll mark the probabily that the man, located at $$(x,y)$$ will live for $$n$$ steps with $$p(x,y,n)$$. Using the [Law of total probability](http://en.wikipedia.org/wiki/Law_of_total_probability),

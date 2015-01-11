@@ -126,8 +126,9 @@ z
 </code></pre>
 
 <p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
 and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert “hello” to [(‘h’, ‘e’), (‘e’, ‘l’), (‘l’, ‘l’), (‘l’, ‘o’)]). 

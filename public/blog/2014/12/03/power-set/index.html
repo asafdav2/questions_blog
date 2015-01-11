@@ -24,7 +24,7 @@ MathJax.Hub.Config({
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Given an integer , implement a function to compute , the power set of the set . — Solution: We are required to construct a set containing &hellip;">
+  <meta name="description" content="Question: Given an integer , implement a function to compute , the power set of the set . Solution: We are required to construct a set containing all &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -116,8 +116,9 @@ MathJax.Hub.Config({
 
 
 <div class="entry-content"><p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
 the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>

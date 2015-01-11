@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-07T10:37:55+02:00</updated>
+  <updated>2015-01-11T07:43:28+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -32,8 +32,9 @@ D knows B
 </code></pre>
 
 <p>Then the result should be <script type="math/tex">B</script>.
-<!--more--> 
-—</p>
+<!--more--> </p>
+
+<hr />
 
 <p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
 in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>
@@ -72,8 +73,9 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
     <id>http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
 For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:
 We’ll start by building the running sums list of the input list, <script type="math/tex">D'</script>. Then, we’d generate a random number <script type="math/tex">r \in [0, 1]</script> and find where it 
@@ -121,8 +123,12 @@ length (descending) and then by the number of occurrences in the input list (des
 
 <p><strong>Example</strong>: </p>
 
-<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ] &lt;!--more--&gt; ---
+<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ]
 </code></pre>
+
+<!--more-->
+
+<hr />
 
 <p><strong>Solution</strong>: Our solution is functional by nature. There are two functions: <code>occurrences</code>, which takes a list of words and return a list of (word, occurrences)
 pairs, and <code>sort</code>, which takes the result of <code>occurrences</code>, sort the pairs according to the required order (first by length, then by occurrences) and strips
@@ -156,8 +162,9 @@ the occurrences amount from each pair, so the result will only contain the words
     <updated>2014-12-03T19:32:20+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
 the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
@@ -218,8 +225,9 @@ and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
 </table>
 
 <p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
 variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step

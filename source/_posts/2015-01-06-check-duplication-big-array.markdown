@@ -10,6 +10,7 @@ categories:
 **Question**: Given an N-sized array A where all values are in the range [0, M] (M >> N),
 implement a time-efficient algorithm to check if A contains a duplicated value.
 <!--more-->
+
 ---
 
 **Solution**: Notice that the questions specifically asks to optimize running time, event at the cost of storage.

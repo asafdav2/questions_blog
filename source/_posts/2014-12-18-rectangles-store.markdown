@@ -34,6 +34,7 @@ Note: The solution should support a large number of rectangles, and an extremely
 * a simple collection of rectangles (isn't efficient enough performance-wise)
 * a map of each point to its corresponding rectangle (isn't efficient enough memory-wise)
 <!--more-->
+
 ---
 
 **Solution**:

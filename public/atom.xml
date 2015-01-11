@@ -4,7 +4,7 @@
   <title><![CDATA[Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-07T10:37:55+02:00</updated>
+  <updated>2015-01-11T07:43:28+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -54,9 +54,10 @@ You are required to store these rectangles in an efficient manner (in terms of m
 <ul>
   <li>a simple collection of rectangles (isn’t efficient enough performance-wise)</li>
   <li>a map of each point to its corresponding rectangle (isn’t efficient enough memory-wise)
-<!--more-->
-—</li>
+<!--more--></li>
 </ul>
+
+<hr />
 
 <p><strong>Solution</strong>:</p>
 
@@ -261,8 +262,9 @@ D knows B
 </code></pre>
 
 <p>Then the result should be <script type="math/tex">B</script>.
-<!--more--> 
-—</p>
+<!--more--> </p>
+
+<hr />
 
 <p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
 in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>
@@ -312,8 +314,9 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
     <id>http://interviewbits.herokuapp.com/blog/2014/12/11/random-number-with-distribution</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Implement a function that takes a list of doubles <script type="math/tex">D = [d_0, d_1, \ldots, d_n]</script> (where <script type="math/tex">\sum_{i=0}^{n} d_i = 1.0</script>) and returns <script type="math/tex">i</script> with probability <script type="math/tex">d_i</script>.
 For example, given the list <script type="math/tex">[0.3, 0.4, 0.2, 0.1]</script>, the function should return 0 with probability 0.3, 1 with probability 0.4, 2 with probability 0.2 and 3 with probability 0.1.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:
 We’ll start by building the running sums list of the input list, <script type="math/tex">D'</script>. Then, we’d generate a random number <script type="math/tex">r \in [0, 1]</script> and find where it 
@@ -373,8 +376,9 @@ running sums list, it returns a function which reuses it.</p>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Imagine a car race, where a bunch of cars are about to drive for a certain distance on a linear track. 
 Given the track length and the initial speed of every car, you should print a message when some car wins the race.
 As cars speed is not constant, you should expose function <code>update(car_id, speed)</code> which is used to update the current speed of certain car.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:</p>
 
@@ -476,8 +480,12 @@ length (descending) and then by the number of occurrences in the input list (des
 
 <p><strong>Example</strong>: </p>
 
-<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ] &lt;!--more--&gt; ---
+<pre><code>sort([ ABC, ABC, ABB, ABCDE, A, B, B, B ]) = [ ABCDE, ABC, ABB, B, A ]
 </code></pre>
+
+<!--more-->
+
+<hr />
 
 <p><strong>Solution</strong>: Our solution is functional by nature. There are two functions: <code>occurrences</code>, which takes a list of words and return a list of (word, occurrences)
 pairs, and <code>sort</code>, which takes the result of <code>occurrences</code>, sort the pairs according to the required order (first by length, then by occurrences) and strips
@@ -523,8 +531,9 @@ the occurrences amount from each pair, so the result will only contain the words
     <updated>2014-12-03T19:32:20+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/03/power-set</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Given an integer <script type="math/tex">n</script>, implement a function to compute <script type="math/tex"> \mathcal P \left({n}\right)</script>, the <a href="http://en.wikipedia.org/wiki/Power_set">power set</a> of the set <script type="math/tex">\{1, \ldots, n\}</script>.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We are required to construct a set containing all subsets of <script type="math/tex">\{1, \ldots, n\}</script>. This can easily be computed recursively; <script type="math/tex"> \mathcal P \left({n}\right)</script> equals the concatanation of <script type="math/tex"> \mathcal P \left({n-1}\right)</script> with 
 the set of sets resulted by appending $n$ to every set in <script type="math/tex"> \mathcal P \left({n-1}\right)</script>. The termination is <script type="math/tex">\mathcal P \left({0}\right)</script>, which is simply the empty set.</p>
@@ -551,8 +560,9 @@ the set of sets resulted by appending $n$ to every set in <script type="math/tex
     <updated>2014-12-02T21:54:15+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/12/02/log-every-second</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Please write a program which will log the sequence 1, 2, 3… , one number every second.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>:
 The following is a simple Javascript implementation:</p>
@@ -635,8 +645,9 @@ and <script type="math/tex">A[j+1]</script> = ‘-‘.</p>
 </table>
 
 <p>Correct answers for this example are <script type="math/tex">j=1</script>, <script type="math/tex">j=5</script> or <script type="math/tex">j=8</script> (each one is acceptable, no need to return them all).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We can use logic similar to binary search to solve this in <script type="math/tex">O(\log{} n)</script> time complexity. We’ll use two 
 variables, <script type="math/tex">l</script> and <script type="math/tex">h</script>, and maintain the following invariant: <script type="math/tex">A[l]</script> = ‘+’ and <script type="math/tex">A[r]</script> = ‘-‘. In each step
@@ -689,8 +700,9 @@ will eventually terminate.</p>
     <updated>2014-11-29T22:59:13+02:00</updated>
     <id>http://interviewbits.herokuapp.com/blog/2014/11/29/insert</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Design and implement a data structure that offers the operations Insert, Delete, Contains and RandomItem, all in <script type="math/tex">O(1)</script> (amortized) time complexity.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: Our data structure will be made of two data structures: an array <script type="math/tex">A</script> to holds the items, and a hashtable <script type="math/tex">H</script> that map each item to its position in the array.
 For example, after inserting items ‘b’, ‘a’, ‘z’, the data structures content will be as follows:</p>
@@ -717,8 +729,9 @@ B = {'a' : 1, 'b' : 0, 'z' : 2}
     <content type="html"><![CDATA[<p><strong>Question</strong>: Givan two real numbers <script type="math/tex">x</script> and <script type="math/tex">\epsilon</script>, find the square root of <script type="math/tex">x</script> within error margin of <script type="math/tex">\epsilon</script> 
 (in other words, find <script type="math/tex">y</script> such that <script type="math/tex">% &lt;![CDATA[
  \lvert \sqrt{x} - y \rvert < \epsilon %]]&gt;</script>). Obviously, you’re not allowed to use the standard <code>sqrt</code> function. 
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: The general idea is to guess a solution <script type="math/tex">y</script> and then iteratively improve it. If <script type="math/tex">y^2 > x</script>, we should aim lower, so in the next step we’ll try <script type="math/tex">y - stepSize</script>. 
 else, we should aim higher, so we’ll try <script type="math/tex">y + stepSize</script>. As we approach our target we should refine our search, so we’ll divide <script type="math/tex">stepSize</script> by 2.
@@ -770,8 +783,9 @@ z
 </code></pre>
 
 <p>write a function that given a word will produce the sequence of key presses required to type out the word on the onscreen keyboard. The function should return the sequence string (up - ‘u’, down - ‘d’, left - ‘l’, right - ‘r’ and enter - ‘!’).
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We build the solution in steps. We start with movements between two characters. To do it, we can find the x/y coordinates of both characters
 and then recursively diminish the x and y differences. To adapt the solution for full word we should split the word to a list of character pairs (for example, convert “hello” to [(‘h’, ‘e’), (‘e’, ‘l’), (‘l’, ‘l’), (‘l’, ‘o’)]). 
@@ -868,8 +882,9 @@ Two more required changes are to prepend ‘a’ to the word (to start movemonts
     <id>http://interviewbits.herokuapp.com/blog/2014/11/28/deadly-island</id>
     <content type="html"><![CDATA[<p><strong>Question</strong>: Imagine an island made of <script type="math/tex">N \times M</script> tiled board, with a man standing in some initial position <script type="math/tex">(x,y)</script>. In each turn, the man steps either up, down, left or right (each
 with probability 0.25). If the man steps out of the island, he dies. Calculate the probability that the man will live after traveling for <script type="math/tex">n</script> steps.
-<!--more-->
-—</p>
+<!--more--></p>
+
+<hr />
 
 <p><strong>Solution</strong>: We’ll mark the probabily that the man, located at <script type="math/tex">(x,y)</script> will live for <script type="math/tex">n</script> steps with <script type="math/tex">p(x,y,n)</script>. Using the <a href="http://en.wikipedia.org/wiki/Law_of_total_probability">Law of total probability</a>,
 we can derive the following equation: </p>
