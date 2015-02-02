@@ -4,7 +4,7 @@
   <title><![CDATA[Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-01-11T07:43:28+02:00</updated>
+  <updated>2015-02-02T18:07:59+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -12,6 +12,75 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Center Points]]></title>
+    <link href="http://interviewbits.herokuapp.com/blog/2015/02/02/center-points/"/>
+    <updated>2015-02-02T17:55:02+02:00</updated>
+    <id>http://interviewbits.herokuapp.com/blog/2015/02/02/center-points</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: We are given a set of points on the <script type="math/tex">x</script> axis; Each point is represented by its <script type="math/tex">x</script> coordinate.
+A point is called <strong>central</strong> if the distance between it to any other point in the set is at most 10.
+Design and implement a data structure that supports the following three operations:</p>
+
+<ul>
+  <li><code>insert(x)</code>, <code>delete(x)</code> - insertion / deletion of point from the set.</li>
+  <li><code>center(x)</code> - returns true if <script type="math/tex">x</script> exists in the set and is central.</li>
+</ul>
+
+<!--more-->
+
+<hr />
+
+<p><strong>Solution</strong>: We will store the points in a balanced tree (such as <a href="http://en.wikipedia.org/wiki/AVL_tree">AVL tree</a>, <a href="http://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Red-black tree</a> or <a href="http://en.wikipedia.org/wiki/B-tree">B-Tree</a>. Specifically Java’s <a href="http://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html">TreeSet</a> is implemented using a Red-Black tree). This will ensure insertion / deletion in <script type="math/tex">O(lgn)</script> time complexity.
+To find if a point is central we can get the minimum and maximum values from the set (<script type="math/tex">O(lgn)</script> as well) and check if the distance between <code>x</code> to both the min/max values is at most 10.</p>
+
+<p>The following is a Java implementation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="Java"><span class="line"><span class="kd">class</span> <span class="nc">CenterPoints</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">double</span> <span class="n">CENTER_DISTANCE</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">TreeSet</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">tree</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;&gt;();</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insert</span><span class="o">(</span><span class="kt">double</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">tree</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="kt">double</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">tree</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">center</span><span class="o">(</span><span class="kt">double</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">if</span> <span class="o">(!</span><span class="n">tree</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">x</span><span class="o">))</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">        <span class="kd">final</span> <span class="kt">double</span> <span class="n">min</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="na">first</span><span class="o">();</span>
+</span><span class="line">        <span class="kd">final</span> <span class="kt">double</span> <span class="n">max</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="na">last</span><span class="o">();</span>
+</span><span class="line">        <span class="k">return</span> <span class="o">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">min</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">CENTER_DISTANCE</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="n">max</span> <span class="o">-</span> <span class="n">x</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">CENTER_DISTANCE</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rectangles Store]]></title>

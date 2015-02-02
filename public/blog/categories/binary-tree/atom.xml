@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Binary Tree | Interview Bits]]></title>
+  <link href="http://interviewbits.herokuapp.com/blog/categories/binary-tree/atom.xml" rel="self"/>
+  <link href="http://interviewbits.herokuapp.com/"/>
+  <updated>2015-02-02T18:07:59+02:00</updated>
+  <id>http://interviewbits.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Asaf David]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Center Points]]></title>
+    <link href="http://interviewbits.herokuapp.com/blog/2015/02/02/center-points/"/>
+    <updated>2015-02-02T17:55:02+02:00</updated>
+    <id>http://interviewbits.herokuapp.com/blog/2015/02/02/center-points</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: We are given a set of points on the <script type="math/tex">x</script> axis; Each point is represented by its <script type="math/tex">x</script> coordinate.
+A point is called <strong>central</strong> if the distance between it to any other point in the set is at most 10.
+Design and implement a data structure that supports the following three operations:</p>
+
+<ul>
+  <li><code>insert(x)</code>, <code>delete(x)</code> - insertion / deletion of point from the set.</li>
+  <li><code>center(x)</code> - returns true if <script type="math/tex">x</script> exists in the set and is central.</li>
+</ul>
+
+<!--more-->
+
+<hr />
+
+<p><strong>Solution</strong>: We will store the points in a balanced tree (such as <a href="http://en.wikipedia.org/wiki/AVL_tree">AVL tree</a>, <a href="http://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Red-black tree</a> or <a href="http://en.wikipedia.org/wiki/B-tree">B-Tree</a>. Specifically Java’s <a href="http://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html">TreeSet</a> is implemented using a Red-Black tree). This will ensure insertion / deletion in <script type="math/tex">O(lgn)</script> time complexity.
+To find if a point is central we can get the minimum and maximum values from the set (<script type="math/tex">O(lgn)</script> as well) and check if the distance between <code>x</code> to both the min/max values is at most 10.</p>
+
+<p>The following is a Java implementation:</p>
+
+<p>&#8220;` Java
+    class CenterPoints {
+        public static final double CENTER_DISTANCE = 10;
+        private TreeSet<double> tree = new TreeSet&lt;&gt;();</double></p>
+
+<pre><code>    public void insert(double x) {
+        tree.add(x);
+    }
+
+    public void delete(double x) {
+        tree.remove(x);
+    }
+
+    public boolean center(double x) {
+        if (!tree.contains(x)) {
+            return false;
+        }
+        final double min = tree.first();
+        final double max = tree.last();
+        return ((x - min) &lt;= CENTER_DISTANCE) &amp;&amp; ((max - x) &lt;= CENTER_DISTANCE);
+    }
+} ```
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
