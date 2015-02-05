@@ -4,7 +4,7 @@
   <title><![CDATA[Interview Bits]]></title>
   <link href="http://interviewbits.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://interviewbits.herokuapp.com/"/>
-  <updated>2015-02-02T18:07:59+02:00</updated>
+  <updated>2015-02-05T19:11:52+02:00</updated>
   <id>http://interviewbits.herokuapp.com/</id>
   <author>
     <name><![CDATA[Asaf David]]></name>
@@ -79,6 +79,44 @@ To find if a point is central we can get the minimum and maximum values from the
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Replace Multiplication, Power and Modulo With Bitwise Operators]]></title>
+    <link href="http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators/"/>
+    <updated>2015-01-06T07:40:49+02:00</updated>
+    <id>http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators</id>
+    <content type="html"><![CDATA[<p><strong>Question</strong>: Given the following equation:</p>
+
+<script type="math/tex; mode=display">foo(x) = 6^x + 5x + x \text{ mod } 4</script>
+
+<p>Your task is to fill an array <script type="math/tex">A</script> (with size <script type="math/tex">N</script>) such that <script type="math/tex">A[i] = foo(i)</script>. Your code must not use the multiplication, power or modulo operators.</p>
+
+<!--more-->
+
+<hr />
+
+<p><strong>Solution</strong>: To replace the power operation, we’ll hold a variable <code>a</code> and multiply it by 6 in each iteration. Since we’re not allowed to use the <code>*</code> operator,
+we’ll use bitwise operators: left shift of two bits is essentially a multiplication by 4, and we’ll add <code>a</code> to the result twice to get multiplication by 6.
+The multiplication by 5 part is very similar. All that remains is to replace the modulo operation. mod by 4 is equal to bitwise AND with 3.</p>
+
+<p>The following is a C solution:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="C"><span class="line"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class="line">  <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
 ]]></content>
   </entry>
   

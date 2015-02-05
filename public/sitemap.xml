@@ -6,6 +6,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators/</loc>
+    <lastmod>2015-01-06T07:40:49+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://interviewbits.herokuapp.com/blog/2014/12/18/rectangles-store/</loc>
     <lastmod>2014-12-18T14:57:53+02:00</lastmod>
     <priority>0.8</priority>
@@ -67,13 +72,13 @@
   </url>
   <url>
     <loc>http://interviewbits.herokuapp.com/blog/archives/</loc>
-    <lastmod>2015-02-02T18:07:59+02:00</lastmod>
+    <lastmod>2015-02-05T19:11:52+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://interviewbits.herokuapp.com/</loc>
-    <lastmod>2015-02-02T18:07:59+02:00</lastmod>
+    <lastmod>2015-02-05T19:11:52+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

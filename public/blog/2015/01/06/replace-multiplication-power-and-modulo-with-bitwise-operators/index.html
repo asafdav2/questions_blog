@@ -20,12 +20,11 @@ MathJax.Hub.Config({
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Celebrities - Interview Bits</title>
+  <title>Replace Multiplication, Power and Modulo With Bitwise Operators - Interview Bits</title>
   <meta name="author" content="Asaf David">
 
   
-  <meta name="description" content="Question: Let us define a celebritiy as a person who is known by everyone, yet knows no one.
-Assume you have a function which returns TRUE if knows ( &hellip;">
+  <meta name="description" content="Question: Given the following equation: Your task is to fill an array (with size ) such that . Your code must not use the multiplication, power or &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -34,7 +33,7 @@ Assume you have a function which returns TRUE if knows ( &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities">
+  <link rel="canonical" href="http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Interview Bits" type="application/atom+xml">
@@ -90,7 +89,7 @@ Assume you have a function which returns TRUE if knows ( &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Celebrities</h1>
+      <h1 class="entry-title">Replace Multiplication, Power and Modulo With Bitwise Operators</h1>
     
     
       <p class="meta">
@@ -106,7 +105,7 @@ Assume you have a function which returns TRUE if knows ( &hellip;">
   
 
 
-<time datetime="2014-12-15T19:32:20+02:00" pubdate data-updated="true"></time>
+<time datetime="2015-01-06T07:40:49+02:00" pubdate data-updated="true"></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://interviewbits.herokuapp.com">Comments</a>
@@ -116,34 +115,21 @@ Assume you have a function which returns TRUE if knows ( &hellip;">
   </header>
 
 
-<div class="entry-content"><p><strong>Question</strong>: Let us define a <em>celebritiy</em> as a person who is known by everyone, yet knows no one.
-Assume you have a function <script type="math/tex">knows(A,B)</script> which returns TRUE if <script type="math/tex">A</script> knows <script type="math/tex">B</script> (and runs in constant time).
-Implement a function that finds the celebrities in a given list of people. This function should run in linear time complexity.</p>
+<div class="entry-content"><p><strong>Question</strong>: Given the following equation:</p>
 
-<p><strong>Example</strong>: If the people list is <script type="math/tex">[A, B, C, D]</script> and the following relations apply:</p>
+<script type="math/tex; mode=display">foo(x) = 6^x + 5x + x \text{ mod } 4</script>
 
-<pre><code>A knows B
-A knows D
-C knows B
-C knows A
-D knows B
-</code></pre>
+<p>Your task is to fill an array <script type="math/tex">A</script> (with size <script type="math/tex">N</script>) such that <script type="math/tex">A[i] = foo(i)</script>. Your code must not use the multiplication, power or modulo operators.</p>
 
-<p>Then the result should be <script type="math/tex">B</script>.
-<!--more--> </p>
+<!--more-->
 
 <hr />
 
-<p><strong>Solution</strong>: First, we can easily deduce that according to the definition, there can only be one celebrity
-in a group of people (if both <script type="math/tex">A</script> and <script type="math/tex">B</script> are celebrities, then <script type="math/tex">A</script> must know <script type="math/tex">B</script> and <script type="math/tex">B</script> must know <script type="math/tex">A</script>, but a celebrity knows no one).</p>
+<p><strong>Solution</strong>: To replace the power operation, we’ll hold a variable <code>a</code> and multiply it by 6 in each iteration. Since we’re not allowed to use the <code>*</code> operator,
+we’ll use bitwise operators: left shift of two bits is essentially a multiplication by 4, and we’ll add <code>a</code> to the result twice to get multiplication by 6.
+The multiplication by 5 part is very similar. All that remains is to replace the modulo operation. mod by 4 is equal to bitwise AND with 3.</p>
 
-<p>The main idea is that given 2 potential celebrities, <script type="math/tex">A</script> and <script type="math/tex">B</script>, we can ask <code>knows(A,B)</code> and eliminate one of them (if <script type="math/tex">A</script> knows <script type="math/tex">B</script> then we can eliminate <script type="math/tex">A</script>, else we can eliminate <script type="math/tex">B</script>). 
-The actual algorithm is as follows: build a potential celebrities pool - a linked list containing all people. Iterate over the list in pairs, and for each pair eliminate one people as described above, and remove him from the list.
-When we reach the end of the list, we’ve eliminated half of the population. Apply the elimination step iteratively until the list length is one. This is the celebrity.</p>
-
-<p>The time complexity for each iteration is linear in the size of the population. Since we eliminate half of the population in each step, the total running time is linear as well (<script type="math/tex">n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + \ldots \rightarrow 2n</script>).</p>
-
-<p>The following is a Scala implementation:</p>
+<p>The following is a C solution:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -151,27 +137,14 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
 <span class="line-number">4</span>
 <span class="line-number">5</span>
 <span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-</pre></td><td class="code"><pre><code class="Scala"><span class="line"><span class="k">class</span> <span class="nc">Celebrities</span> <span class="o">{</span>
+</pre></td><td class="code"><pre><code class="C"><span class="line"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span><span class="line">
-</span><span class="line">    <span class="k">def</span> <span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">people</span> <span class="k">match</span> <span class="o">{</span>
-</span><span class="line">        <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
-</span><span class="line">        <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">b</span> <span class="o">::</span> <span class="n">rest</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">knows</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">))</span> <span class="n">b</span> <span class="k">else</span> <span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">diminish</span><span class="o">(</span><span class="n">rest</span><span class="o">)</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="k">def</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">people</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
-</span><span class="line">        <span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">people</span><span class="o">.</span><span class="n">head</span>
-</span><span class="line">        <span class="k">else</span> <span class="n">celebrity</span><span class="o">(</span><span class="n">diminish</span><span class="o">(</span><span class="n">people</span><span class="o">))</span>
-</span><span class="line">
-</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class="line">  <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Have any questions / remarks? leave them at the commonts below!</p>
 </div>
 
 
@@ -194,12 +167,12 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
   
 
 
-<time datetime="2014-12-15T19:32:20+02:00" pubdate data-updated="true"></time>
+<time datetime="2015-01-06T07:40:49+02:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/algorithms/'>algorithms</a>, <a class='category' href='/blog/categories/scala/'>scala</a>
+    <a class='category' href='/blog/categories/bitwise-operations/'>bitwise operations</a>, <a class='category' href='/blog/categories/c/'>c</a>
   
 </span>
 
@@ -208,7 +181,7 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/" data-via="" data-counturl="http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators/" data-via="" data-counturl="http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators/" >Tweet</a>
   
   
   
@@ -219,10 +192,10 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/12/11/random-number-with-distribution/" title="Previous Post: Random number with distribution">&laquo; Random number with distribution</a>
+        <a class="basic-alignment left" href="/blog/2014/12/18/rectangles-store/" title="Previous Post: rectangles store">&laquo; rectangles store</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/12/18/rectangles-store/" title="Next Post: rectangles store">rectangles store &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2015/02/02/center-points/" title="Next Post: center points">center points &raquo;</a>
       
     </p>
   </footer>
@@ -307,8 +280,8 @@ When we reach the end of the list, we’ve eliminated half of the population. Ap
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/';
-        var disqus_url = 'http://interviewbits.herokuapp.com/blog/2014/12/15/celebrities/';
+        var disqus_identifier = 'http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators/';
+        var disqus_url = 'http://interviewbits.herokuapp.com/blog/2015/01/06/replace-multiplication-power-and-modulo-with-bitwise-operators/';
         var disqus_script = 'embed.js';
       
     (function () {
